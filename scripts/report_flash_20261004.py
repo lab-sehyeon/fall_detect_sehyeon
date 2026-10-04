@@ -1,0 +1,157 @@
+"""Publish FLASH comparison only after independent prediction/metric audit."""
+import csv
+import io
+import re
+from pathlib import Path
+
+from flash_reproduction_20261004 import ROOT,OUT as TRAIN,EVIDENCE,read,save,sha,require
+from evaluate_flash_20261004 import OUT
+
+INTERNAL=ROOT/'docs/internal/2026-10-04_flash_reproduction_internal.md'
+SHARED=ROOT/'docs/shared/2026-10-04_flash_reproduction_shared.md'
+
+
+def table(head,rows):
+    return '\n'.join(['| '+' | '.join(head)+' |','| '+' | '.join(['---']*len(head))+' |']+
+                     ['| '+' | '.join(map(str,r))+' |' for r in rows])
+
+
+def main():
+    result=read(OUT/'evaluation.json');audit=read(OUT/'independent_audit.json');source=read(TRAIN/'source_evaluation.json')
+    require(result['passed'] and audit['passed'] and not result['pending_independent_audit'],'unverified result')
+    require(audit['evaluation_sha256']==sha(OUT/'evaluation.json'),'audit not current')
+    names={'own':'사용자 DSTE/J1/G0','flash':'FLASH 공식 구현 재학습'}
+    scope_names={'le2i130':'Le2i 130개','cauca100':'CAUCAFall 100개'}
+    rows=[];flat=[];event_rows=[]
+    for scope in scope_names:
+        for model in names:
+            s=result['summaries'][model][scope];v=s['video'];e=s['event']
+            rows.append([scope_names[scope],names[model],f"{100*v['accuracy']:.2f}%",f"{100*v['precision']:.2f}%",
+                         f"{100*v['recall']:.2f}%",f"{100*v['f1']:.2f}%",f"{100*e['f1']:.2f}%",f"{s['processed']}/{s['videos']}"])
+            event_rows.append([scope_names[scope],names[model],e['tp'],e['fp'],e['fn'],
+                               '/'.join(str(v[k]) for k in ('tp','fp','fn','tn'))])
+            flat.append(dict(dataset=scope,model=model,videos=s['videos'],processed=s['processed'],
+                 **{'video_'+k:v[k] for k in ('tp','fp','fn','tn')},
+                 **{'video_'+k+'_percent':100*v[k] for k in ('accuracy','precision','recall','f1')},
+                 **{'event_'+k:e[k] for k in ('tp','fp','fn')},event_f1_percent=100*e['f1']))
+    comparison=table(['데이터셋','모델','영상 정확도','영상 정밀도','영상 재현율','영상 F1','사건 F1','처리/전체'],rows)
+    confusion=table(['데이터셋','모델','사건 TP','사건 FP','사건 FN','영상 TP/FP/FN/TN'],event_rows)
+    srcrows=[]
+    for split,label in [('validation','검증9개'),('test','시험9개')]:
+        s=source[split]
+        srcrows.append([label,f"{100*s['accuracy']:.2f}%",f"{100*s['f1']:.2f}%",
+                        f"{100*audit['source'][split]['always_positive_f1']:.2f}%"])
+    srctable=table(['Source 분할','프레임 정확도','프레임 F1','항상 impact일 때 F1'],srcrows)
+    buf=io.StringIO();writer=csv.DictWriter(buf,fieldnames=list(flat[0]));writer.writeheader();writer.writerows(flat)
+    (OUT/'comparison.csv').write_text(buf.getvalue())
+    (ROOT/'docs/shared/2026-10-04_flash_external_results.csv').write_text(buf.getvalue())
+    case_rows=[]
+    for r in result['rows']:
+        case_rows.append(dict(id=r['id'],dataset=r['scope'],model=r['model'],processed=r['processed'],
+                              truth_fall=int(bool(r['episodes'])),prediction_fall=r['video_prediction'],
+                              event_tp=r['event']['tp'],event_fp=r['event']['fp'],event_fn=r['event']['fn'],
+                              alarms=len(r['predictions'])))
+    buf=io.StringIO();w=csv.DictWriter(buf,fieldnames=list(case_rows[0]));w.writeheader();w.writerows(case_rows)
+    (OUT/'cases.csv').write_text(buf.getvalue())
+    old=INTERNAL.read_text();marker='\n## 완료 결과와 독립 검산\n'
+    if marker in old:old=old.split(marker)[0]
+    old=re.sub(r'^상태: `(?:in_progress|paused)`$', '상태: `completed`', old, count=1, flags=re.M)
+    completion=f'''
+## 완료 결과와 독립 검산
+
+학습 {source['epochs']}epoch 수행,최소validation BCE의{source['best_epoch']}epoch 선택.
+학습 {source['seconds']:.2f}초. 외부 추론 {read(OUT/'inference_summary.json')['seconds']:.2f}초,
+독립 검산 {audit['seconds']:.2f}초. 원본 network strict load,source18개 및 외부{audit['target_replay_blocks']}block을
+독립 tensor preprocessing으로 재추론. 최대logit차 source{audit['max_source_logit_error']:.9g}/target{audit['max_target_logit_error']:.9g}.
+판정과 전체혼동행렬 일치. 영상pixel·PTS {audit['pixels_verified']}프레임 검산;
+MediaPipe 고정4영상 {audit['mediapipe_replay_frames']}프레임 재추출 최대차{audit['max_pose_abs_error']:.9g}.
+기존 own230개예측 변경없음. 외부 데이터 학습 및 threshold 튜닝 없음(0.5고정).
+감사 revision A2. Source 원 logit 허용오차 통과 여부:
+{audit['source_original_logit_tolerance_passed']}, 미일치 원소 {audit['source_original_logit_tolerance_mismatches']}개.
+Source raw logit의 bit-exact 재현은 주장하지 않으며, 1800개 프레임 판정 및 혼동행렬은 모두 일치한다.
+원 실패 기록과 A2 변경 근거는 audit_resume_20261004 및 audit_revision_a2.json에 보존했다.
+
+{srctable}
+
+{comparison}
+
+{confusion}
+
+산출물: {OUT.relative_to(ROOT)}의evaluation.json,independent_audit.json,comparison.csv,cases.csv 및영상별pose/prediction.npz.
+Source: {TRAIN.relative_to(ROOT)}의best.pt,sc1.pkl,history.json,source_evaluation.json,source_predictions.npz.
+원본계약과최종체크포인트SHA는각contract/model_lock/source_evaluation에기록.
+source재현성과외부task/입력차이를공유문서에반영.논문original-checkpoint/bit-exact reproduction또는실시간성능으로제시하지않음.
+shared_update: updated
+'''
+    INTERNAL.write_text(old+completion)
+    shared=f'''# FLASH 직접 학습과 공통 외부 평가 결과
+
+문서 ID: DOC-20261004-flash-reproduction-R1
+기준일: 2026-10-04
+상태: `completed`
+
+FLASH 공식 모델을 공개 UP-Fall 3D skeleton으로 직접 학습하고, 고정한 모델을 Le2i 130개와 CAUCAFall 100개에서 평가했다.
+기존 사용자 모델의 같은 230개 영상 예측과 비교했다. 외부 데이터에서 학습·checkpoint 선택·threshold 조정을 하지 않았다.
+이번 결과는 수정 사항을 명시한 공식 구현 기반 재현이며, 저자 배포 가중치나 원논문 평가 수치의 동일 재현이 아니다.
+
+## 외부 성능 비교
+
+{comparison}
+
+{confusion}
+
+영상 F1은 영상 중 경보가 하나라도 있는지를 평가한다. 사건 F1은 경보의 시각과 정답 구간을
+비교하며 추가·반복 경보도 FP로 센다. 매칭 범위는 정답 시작0.5초 전부터 종료3초 후까지로 기존과 동일하다.
+처리 실패 영상은 제외하지 않고 무경보로 집계했다. 처리 성공은 모든 프레임에서 관절이 정확히 검출되었다는 의미가 아니다.
+
+FLASH 재학습본은 Le2i의 비낙상 31개와 CAUCAFall의 비낙상 50개 모두에 낙상 경보를 냈다.
+따라서 높은 낙상 재현율이나 영상 F1만으로 비낙상 구분이 잘 된다고 해석할 수 없다.
+CAUCAFall의 낙상 영상 1개는 관절이 전혀 검출되지 않아 처리 실패였으며, FN과 전체 분모에 포함했다.
+사용자 모델과의 차이는 이 학습 데이터와 외부 입력 연결 조건에서 관측한 결과이며,
+FLASH 논문의 일반적인 성능이나 두 모델 구조 자체의 우열로 확대하지 않는다.
+
+## Source 학습 확인
+
+공개 82개 시퀀스를 학습 64개, 검증 9개, 시험 9개로 분할했고, 학습 분할만 증강해 256개를 사용했다.
+AdamW, 학습률 0.0001, weight decay 0.00001, 유효 batch 32, 최대 300 epoch와 검증 손실 조기 종료를 적용했다.
+실제 {source['epochs']} epoch를 수행하고 {source['best_epoch']} epoch를 선택했다. 시험 분할은 모델 선택에 사용하지 않았다.
+
+{srctable}
+
+공개 source의 모든 시퀀스에 impact 양성 구간이 포함되어 있다. 학습 과제는 낙상 영상 내 impact/non-impact 프레임 판정이며,
+독립적인 ADL 영상의 fall/non-fall 분류와 다르다. 양성 다수 클래스 효과를 확인할 수 있도록 항상 impact를 출력하는 기준도 함께 제시했다.
+
+## 재현 변경과 해석 한계
+
+- 공식 모델 구조를 유지하고 좌표열 99개 XYZ 선택, 분할 후 증강, 학습 분할만 정규화 fitting, 시간 증강과 정답의 대응을 수정했다.
+- 공개 코드의 모델은 약 74.97M parameters로 논문 표의 37.1M과 차이가 있다. 원본 split 목록도 없어 기록된 새 random sequence split을 사용했다. 피험자·카메라 독립 평가로 주장하지 않는다.
+- 외부 영상은 MediaPipe 33관절 정규화 좌표로 변환했다. 역사적 source 추출 코드·버전은 미확인이고, source 설명의 crop/background 제거와 외부 full-frame 입력은 차이가 있다.
+- 원본 프레임을 시간순서대로 100개씩 추론하고 마지막 길이 부족분만 끝 프레임으로 padding했다. 미검출 시 문맥 입력은 직전 관절을 유지하며 미검출 프레임의 출력은 경보로 세지 않았다.
+- FLASH의 시간 합성곱은 묶음 내 미래 문맥을 사용한다. 이번 결과는 오프라인 위치 검출이며, 실시간 탐지 지연이나 인과적 스트리밍 성능의 비교가 아니다.
+
+모든 source 검증·시험 예측과 외부 block을 재추론했으며, 사건·영상 혼동행렬을 별도로 검산했다.
+Source 재추론에서는 연산 조건에 따른 소수점 차이가 남았지만 프레임 판정과 집계값은 모두 일치했다.
+Source 출력값 자체가 완전히 동일하게 재현됐다는 주장은 하지 않는다. 외부 예측은 원 실행 조건으로 전수 재확인했다.
+결과는 이 source 재현과 외부 연결 조건에서의 성능에 한정한다.
+
+근거:[FLASH 논문](https://arxiv.org/html/2607.25791v1),[공식 구현](https://github.com/Tresor-Koffi/FLASH-Impact-Fall-Detection),
+[공식 source](https://zenodo.org/records/12773013),[MediaPipe Pose](https://chuoling.github.io/mediapipe/solutions/pose.html).
+'''
+    SHARED.write_text(shared)
+    for name in ('docs/README.md','docs/shared/README.md','docs/internal/README.md'):
+        p=ROOT/name;lines=p.read_text().splitlines()
+        for i,line in enumerate(lines):
+            if '2026-10-04_flash_reproduction_' in line:
+                lines[i]=line.replace('`in_progress`','`completed`').replace('평가 진행','평가 완료')
+        p.write_text('\n'.join(lines)+'\n')
+    require('DOC-20261004-flash-reproduction-R1' in INTERNAL.read_text() and
+            'DOC-20261004-flash-reproduction-R1' in SHARED.read_text(),'paired document ID')
+    for forbidden in ('/home/','data/fall_processed','CUDA_VISIBLE','training.log','sha256'):
+        require(forbidden not in SHARED.read_text(),'internal material in shared document')
+    save(EVIDENCE/'report_validation.json',dict(passed=True,evaluation_sha256=sha(OUT/'evaluation.json'),
+         audit_sha256=sha(OUT/'independent_audit.json'),source_sha256=sha(TRAIN/'source_evaluation.json'),
+         internal_sha256=sha(INTERNAL),shared_sha256=sha(SHARED),rows=4))
+    print(comparison,flush=True)
+
+
+if __name__=='__main__':main()

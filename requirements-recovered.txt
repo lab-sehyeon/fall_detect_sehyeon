@@ -1,0 +1,14 @@
+# Core versions recorded by the upstream project. CUDA wheels may require the
+# matching PyTorch index URL for the target machine.
+numpy>=1.22,<2
+scipy>=1.8
+scikit-learn>=1.1
+torch>=1.8
+torchvision>=0.9
+tqdm>=4.60
+tensorboard>=2.8
+PyYAML>=6
+
+# RGB front-end (needed only for raw-video inference)
+opencv-python>=4.7
+ultralytics>=8

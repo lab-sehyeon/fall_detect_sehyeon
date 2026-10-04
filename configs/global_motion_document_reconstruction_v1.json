@@ -1,0 +1,50 @@
+{
+  "experiment_id": "GLOBAL_MOTION_DOCUMENT_RECONSTRUCTION_20260928_R1",
+  "historical_exact_reproduction": false,
+  "source_config": "configs/safer_v2_document_reconstruction_v1.json",
+  "source_audit": "data/source_archives/rgb_preparation_20260928_r1/safer_global_source_audit/report.json",
+  "source_audit_sha256": "dbcfd38175447053a34770003068fd842d08b58d0ad82c66e5dc1a3b3c2a7ce6",
+  "sequence_root": "data/fall_processed/SAFER-Activities/v3_document_reconstruction_20260922_r3/sequence_cache",
+  "sequence_manifest_sha256": "6f4d6d64a9534055f7375aba38696aaae8b464b27a13433ac97a303751e7993c",
+  "controls_root": "checkpoint/fall/F0_CONTROLS_SAFER_V3_DOCUMENT_RECONSTRUCTION_20260922_R3",
+  "controls_report_sha256": "0e6b5db3cc1af4dc9c64c5a5708e550158a6f65f84a2286085f38de0921ac70b",
+  "joint_root": "checkpoint/fall/JOINT_V3_DOCUMENT_RECONSTRUCTION_20260922_R3/v3",
+  "joint_report_sha256": "f2462d3a7e63843a2922cef77198b53d38b722880282df693f66db7dc4633ad4",
+  "j1_weight_sha256": "2d897a10e5a2f0d03ef743906bfcbc45c9acc1a6397d6dc1bef880387cb69cea",
+  "data_output": "data/fall_processed/SAFER-Activities/global_document_reconstruction_20260928_r1",
+  "output_dir": "checkpoint/fall/GLOBAL_MOTION_DOCUMENT_RECONSTRUCTION_20260928_R1",
+  "split_counts": {"train":609183,"val":106680,"test":219896,"ood":71964},
+  "raw": {
+    "bbox_semantics":"corner_xywh; finite positive size, no clipping to image bounds",
+    "coordinate_space":"official resized image metadata; OOD RGB resize to1920x1080 before pose alignment",
+    "channels":["pelvis_x/width","pelvis_y/height","bbox_center_x/width","bbox_center_y/height","bbox_width/width","bbox_height/height","shoulder_mid_x/width","shoulder_mid_y/height","torso_dx/width","torso_dy/height","normalized_torso_length","mean_finite_nonnegative_joint_confidence"],
+    "keypoint_confidence_min":0.2,
+    "joint_valid":"finite XY and score>=0.2, nonzero XY; pelvis uses hips11/12, shoulders5/6",
+    "torso":"shoulder midpoint minus pelvis; length sqrt(dx_norm^2+dy_norm^2), >1e-8",
+    "invalid":"zero + explicit channel mask, no interpolation, no sequence removal"
+  },
+  "causal": {
+    "fps":25,"trailing_width":3,"window":64,"stride":8,
+    "smoothing":"full-sequence trailing valid mean; valid if any valid in trailing3",
+    "derivative":"backward difference times25; valid only when adjacent operands valid; first value invalid zero",
+    "feature_order":"channel-major 12x5 level then12x5 velocity; pelvis_y acceleration4; quality7",
+    "five_stats":["masked_mean","masked_population_std","masked_min","masked_max","last_if_valid_else_zero"],
+    "acceleration_stats":["masked_mean","masked_population_std","masked_min","masked_max"],
+    "quality":["raw_mask_mean","all_channels_frame_fraction","endpoint_mask_mean","min_channel_fraction","mean_channel_fraction","max_channel_fraction","window_length"],
+    "window_order":"exact V3 sequence_index/window_start; no appended tail; derivative never reset per window"
+  },
+  "model":{"frozen":"DSTE/ADL and final J1-V3; only new G heads optimized","G0":2048,"G1":131,"G2":2179,"classes":4,"global_scaler":"train-only mean/population_std float64, scale<1e-12 set1; J1 unscaled"},
+  "training": {
+    "seed":0,"epochs":50,"batch_size":512,"eval_batch_size":4096,
+    "optimizer":"SGD","lr":0.006,"momentum":0.9,"weight_decay":0.0,"schedule":"constant over50epochs",
+    "class_weight":"train-only inverse-sqrt counts normalized by mean; absent count clamp1",
+    "init":"each linear normal(0,0.01),bias0,seed0",
+    "shuffle":"CPU torch.Generator seed+epoch, same order for G0/G1/G2, drop_last=false",
+    "selection":"per-variant validation macroF1 then conditional fall-vs-lie AP; exact ties earliest epoch",
+    "holdout":"test/ood features, labels and metrics only after selection lock; no retuning",
+    "adoption_gate":{"macro_gain_min":0.005,"fall_recall_drop_max":0.01,"lie_down_f1_drop_max":0.01}
+  },
+  "execution":{"physical_gpu":"0","cpu_threads":2,"gpu_memory_fraction":0.65,"minimum_gpu_free_gib":16,"reserve_gib":64,"additional_budget_gib":3,"amp":false,"tf32":false,"deterministic":true,"pause":"raw sequence/cache chunk/completed epoch boundaries"},
+  "audit":{"cpu_atol":0.0001,"cpu_rtol":0.00001,"raw_source_rebuild":"all497","feature_rebuild":"all windows; independent first/middle/last per sequence","full_metric_replay":true},
+  "newly_specified_not_recovered":["exact12channel definitions/validity/131D masked statistics","SGD lr0.006 batch512 momentum0.9 and inverse-sqrt weights","constant50epoch schedule and seed sequence","per-head AP tie breaker and current finalJ1 lineage","singleGPU0 and resource-conscious in-memory J1 representations"]
+}

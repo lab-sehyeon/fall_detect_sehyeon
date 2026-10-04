@@ -1,0 +1,19 @@
+{
+  "experiment_id": "FU_PROBE_DOCUMENT_RECONSTRUCTION_20260920_R1",
+  "historical_exact_reproduction": false,
+  "configuration_kind": "user_approved_document_grounded_reconstruction",
+  "historical_source": "fall_project_complete_record_2026-08-23_v4.md section 3.10",
+  "zs_config_sha256": "a8416070bf4a4ae76267148db7a22aee89074901e986bf6151df694127fd48be",
+  "profiles": ["zs1_native30", "zs1_aligned25"],
+  "representations": {"d0_temporal": 1024, "d0_temporal_spatial": 2048, "d1_hidden": 512, "d2_concat": 2560},
+  "window_feature": "DSTE temporal max over real outputs, spatial max over all 50 tokens as recovered F0; F1 hidden mean over real outputs",
+  "clip_feature": "arithmetic mean of window features, each window equal weight",
+  "padding_outputs": "excluded from temporal max and hidden mean; repeated-pose inputs may still influence contextual tokens",
+  "standardization": "none",
+  "folds": "(subject-1)%5; train other four folds, selection/evaluation on held-out fold",
+  "claim": "development validation-OOF, not unbiased nested or external generalization",
+  "training": {"seed": 0, "epochs": 50, "batch_size": 32, "optimizer": "AdamW", "lr": 0.001, "betas": [0.9, 0.999], "eps": 1e-8, "weight_decay": 0.0001, "scheduler": "none", "loss": "CE with train-fold-only inverse-sqrt class frequency divided by mean", "initialization": "normal(0,0.01) weight, zero bias", "shuffle": "randperm generator seed+epoch shared between representations", "drop_last": false, "selection": ["f1", "auprc", "accuracy"], "ties": "earliest epoch", "amp": false, "tf32": false},
+  "newly_specified_not_recovered": ["R2 F1 lineage", "window/clip pooling", "no scaler", "probe training hyperparameters and selection", "sampling details inherited from ZS revision"],
+  "execution": {"physical_gpu": "0", "cpu_threads": 2, "feature_batch_size": 128, "reserve_gib": 64},
+  "output_dir": "checkpoint/fall/FU_PROBE_DOCUMENT_RECONSTRUCTION_20260920_R1"
+}

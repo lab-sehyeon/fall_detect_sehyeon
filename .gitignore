@@ -1,0 +1,108 @@
+# Python bytecode and native build products
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Python packaging and test/tool caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+.cache/
+.ipynb_checkpoints/
+
+# Local environments and machine-specific secrets
+.venv/
+venv/
+env/
+.conda/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.json
+token*.json
+
+# Editors and operating-system metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Large or licensed research data. Restore these separately.
+/data/
+/datasets/
+/checkpoint/
+/inference_outputs/
+
+# Training, evaluation and experiment-service outputs
+/logs/
+/runs/
+/outputs/
+/results/
+/predictions/
+/wandb/
+/lightning_logs/
+/mlruns/
+/multirun/
+/tensorboard/
+*.log
+slurm-*.out
+
+# Model/export files created outside the checkpoint directory
+*.pth
+*.pth.tar
+*.pt
+*.ckpt
+*.onnx
+*.engine
+*.tflite
+*.safetensors
+
+# Downloaded archives and crash/temporary output
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+core
+core.*
+*.tmp
+*.temp
+*.bak
+
+# Upstream repositories are managed independently. Add them as proper Git
+# submodules before tracking instead of committing nested .git directories.
+/third_party/
+
+# Machine-local recovery inventory. Small curated provenance artifacts remain
+# trackable under artifacts/.
+/artifacts/recovery/full_inventory.json
+
+# Personal/internal worklogs are local-only by default.
+/docs/internal/*
+!/docs/internal/README.md
+
+# Publication copy: local records and dataset-derived illustrations are not distributed.
+AGENTS.md
+/docs/internal/
+/artifacts/
+/docs/images/*
+!/docs/images/model_pipeline/

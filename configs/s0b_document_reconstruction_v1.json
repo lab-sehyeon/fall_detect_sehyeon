@@ -1,0 +1,21 @@
+{
+  "experiment_id": "S0B_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "output": "checkpoint/fall/S0B_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "s0a_config": "configs/s0a_document_reconstruction_v1.json",
+  "s0a_config_sha256": "70cd68ea467073ee1fbad19ff30f01af45b543798e1f65e9f96475561bed8355",
+  "s0a_root": "checkpoint/fall/S0A_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "s0a_report_sha256": "bef53439a116736685d7baf914214c55deefa0e82a1895a847778f0f46e56177",
+  "s0a_selection_sha256": "e407cf1cf42230b58a3409ab9e5d213086845e323dbbdf7c203404dc60fd7bdf",
+  "s0a_checkpoint_sha256": "292790216a47ee66fe8e6db326bc2bbc4a606e110499c663e7bce2df6b7fd07d",
+  "historical_exact_reproduction": false,
+  "sources": {
+    "historical": "fall_project_complete_record_2026-08-23_v4.md S0-B implementation/results, lines4290-4329",
+    "block": "https://github.com/yabufarha/ms-tcn/blob/0e418c029c2de1e90f6c54f45a0c186d8d9977b0/model.py",
+    "block_source_sha256": "bf69c1480eee28ed33e669de9e2dfd587dfdda26bd7239b1be752d12a7824652",
+    "missing_optimizer": "explicit recovery choice matching approved F1 AdamW settings, not recovered historical S0-B optimizer"
+  },
+  "model": {"input_dim":2048,"classes":16,"hidden":256,"dilations":[1,2,4],"kernel_size":3,"dropout":0.5,"input_projection":"Conv1d1x1 without activation","block":"dilated Conv3 symmetric padding -> ReLU -> Conv1x1 -> dropout -> add skip","output":"Conv1x1 logits correction, all weights and bias zero","initialization":"other Conv Xavier uniform, biases zero","frozen_base":"selected S0-A Linear2048->16","causal":false},
+  "training": {"epochs":12,"seed":0,"batch_size":1024,"microbatch_size":128,"optimizer":"AdamW","lr":0.001,"betas":[0.9,0.999],"eps":1e-8,"weight_decay":0.0001,"gradient_clip":1.0,"scheduler":"constant","loss":"sqrt CE; sum microbatch weighted loss / effective-batch sum weights","class_counts":"same unique-covered-train-frame counts as S0-A","shuffle":"CPU torch.randperm(seed+epoch)","drop_last":false,"amp":false,"tf32":false},
+  "evaluation": {"batch_size":128,"selection":["macro_f1","segment_f1_50","edit"],"initial_best":"epoch0 S0-A; replace only strict lexicographic improvement","ties":"earlier epoch","holdouts":"selected only after all12epochs and val selection lock","macro_drop_max":0.005,"segment_gain_min":0.02,"edit_gain_min":0.02,"switch_reduction_min":0.25,"fall_recall_drop_max":0.02,"metric_contract":"same as S0-A R1"},
+  "execution": {"reserve_gib":64,"minimum_gpu_free_gib":12,"gpu_memory_fraction":0.65,"checkpoint_batches":8,"smoke_windows":1024,"smoke_epochs":1,"feature_cache":false,"new_output_gib_max":0.6,"pause_file":"PAUSE_REQUESTED"}
+}

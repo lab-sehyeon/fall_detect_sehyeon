@@ -1,0 +1,23 @@
+{
+  "experiment_id": "F0_CONTROLS_SAFER_V2_DOCUMENT_RECONSTRUCTION_20260922_R1",
+  "historical_exact_reproduction": false,
+  "historical_source": "fall_project_complete_record_2026-08-23_v4.md sections 3.21 and 3.22",
+  "data_root": "data/fall_processed/SAFER-Activities/v2_document_reconstruction_20260920_r1",
+  "materialization_manifest_sha256": "baf34a5521c5caaf742ee4e55b4730c334ca0d9f0316b98909977fcf4ffedc5f",
+  "preprocessing_final_report_sha256": "0077a9207b51a066e43c8f5a0e908744ddf8f71c81854882d2c95c5f00634633",
+  "split_counts": {"train": 609183, "val": 106680, "test": 219896, "ood": 71964},
+  "encoder": "checkpoint/ntu60/xsub/ntu60_xs_joint_dste.pth.tar",
+  "encoder_sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064",
+  "adl_root": "checkpoint/adl_baseline/ntu60_xsub_joint_dste_official_umurl_seed0_gpu0_epoch150",
+  "adl_head_sha256": "8f160507d061e62d1cd4f3761b0117cdcc27cb67678a567a21bc76b3a290606f",
+  "adl_run_config_sha256": "ee85eeecb1d0ef5c60fc9b8ba33942a3d8b83c987a163265d538cf61fbb2046d",
+  "matched_training_config": "configs/f0b_safer_v1_recovery_sgd_v1.json",
+  "matched_training_config_sha256": "717ed6df87791874d334a2a344763adaee1f8e767f89ea37daed175979865345",
+  "f0a": {"decision": "60-class argmax equals index42 A043", "score": "full 60-class softmax probability index42", "positive_coarse": 10, "conditional_coarse": [10,11,12], "splits": ["val","test","ood"], "training": false, "threshold_fit": false},
+  "f0b": {"training": "copy candidates/optimization/evaluation exactly from pinned reconstructed V1 config; only V2 data changes", "pooled_temporal": 1024, "pooled_spatial": 1024, "head_input": "temporal only or temporal then spatial concatenation", "epochs": 50, "seed": 0, "selected_test_ood_only": true},
+  "order": ["source hash and structural gates", "train/val frozen features", "two heads 50 epochs and validation-only selection", "selection lock", "test/ood frozen features and fixed selected head", "F0A val/test/ood", "independent metric and saved-output audits"],
+  "execution": {"physical_gpu": "0", "cpu_threads": 2, "extract_batch_size": 256, "head_eval_batch_size": 512, "amp": false, "tf32": false, "seed": 0, "deterministic_algorithms": true, "gpu_memory_fraction": 0.65, "minimum_gpu_free_gib": 16, "reserve_gib": 64, "additional_output_gib_upper_bound": 12, "flush_batches": 25, "resume": "same config/code and verified cache blocks; atomic complete epochs", "pause": "PAUSE_REQUESTED at flushed extraction block or completed epoch"},
+  "audit": {"cached_forward_batches_per_split": "first, middle, last with identical batch boundaries", "cached_forward_exact": true, "cpu_head_logit_atol": 0.0001, "cpu_head_logit_rtol": 0.00001, "metrics_from_saved_logits": true, "independent_confusion_and_f1": true, "all_payload_hashes": true},
+  "limits": ["new V2 mapping/normalization and official confidence-order limitation carry forward", "optimizer is the matched reconstructed V1 SGD convention, not recovered original", "V1 and V2 exclude different windows; full-split comparison is not a pure mapping ablation", "no source model weights or previous outputs are changed", "no CAUCA access, J0/J1 training or V3 selection inside this run"],
+  "output_dir": "checkpoint/fall/F0_CONTROLS_SAFER_V2_DOCUMENT_RECONSTRUCTION_20260922_R1"
+}

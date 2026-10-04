@@ -1,0 +1,6 @@
+config,split,videos,segments,fall,nonfall,test_subject_count,fall_duration_median_seconds,fall_shorter_than_2_52_seconds,nonpositive_duration_segments,model_evaluated_in_this_search,metadata_source
+le2i-cs,test,38,203,22,181,2,1.9690150022506714,18,0,False,https://huggingface.co/datasets/simplexsigil2/omnifall/blob/83572a37b9e3081df8c06a56874b1d1f2a19386c/parquet/le2i-cs/test-00000-of-00001.parquet
+caucafall-cs,test,19,47,9,38,2,2.4000000953674316,5,0,False,https://huggingface.co/datasets/simplexsigil2/omnifall/blob/83572a37b9e3081df8c06a56874b1d1f2a19386c/parquet/caucafall-cs/test-00000-of-00001.parquet
+up_fall-cs,test,264,522,114,408,4,2.0047991275787354,92,2,False,https://huggingface.co/datasets/simplexsigil2/omnifall/blob/83572a37b9e3081df8c06a56874b1d1f2a19386c/parquet/up_fall-cs/test-00000-of-00001.parquet
+edf-cs,test,2,128,16,112,1,2.8888607025146484,2,0,False,https://huggingface.co/datasets/simplexsigil2/omnifall/blob/83572a37b9e3081df8c06a56874b1d1f2a19386c/parquet/edf-cs/test-00000-of-00001.parquet
+occu-cs,test,2,101,16,85,1,1.1399993896484375,16,0,False,https://huggingface.co/datasets/simplexsigil2/omnifall/blob/83572a37b9e3081df8c06a56874b1d1f2a19386c/parquet/occu-cs/test-00000-of-00001.parquet

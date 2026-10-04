@@ -1,0 +1,74 @@
+{
+  "experiment_id": "FLASH_REPRODUCTION_20261004_R1",
+  "provenance": "author official network; source-only retraining with documented data-loader corrections",
+  "author_commit": "04a1215314472085aea68009159c5f9237e9e7cf",
+  "paper": "https://arxiv.org/html/2607.25791v1",
+  "source": "https://zenodo.org/records/12773013",
+  "seed": 42,
+  "input": {
+    "frames": 100,
+    "joints": 33,
+    "channels": 3,
+    "columns": "all 99 CSV coordinates in stored order; no remapping",
+    "normalization": "train frames only StandardScaler; frozen for all other inputs",
+    "graph_preprocessing": "official HGCN.hypergraph.Hypergraph H_norm (26 hyperedges), preserved",
+    "model_graph": "official HGCN.hypergraph_ablation.HypergraphAblation full (6 hyperedges), preserved"
+  },
+  "split": {
+    "method": "official two-stage sklearn random sequence split, applied BEFORE augmentation",
+    "test_size": 0.1,
+    "validation_of_remaining": 0.111,
+    "counts": {
+      "train": 64,
+      "validation": 9,
+      "test": 9
+    },
+    "subject_independent": false,
+    "pairwise_camera_independent": false
+  },
+  "optimizer": {
+    "name": "AdamW",
+    "lr": 0.0001,
+    "weight_decay": 1e-05,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08
+  },
+  "training": {
+    "max_epochs": 300,
+    "batch_size": 32,
+    "microbatch_size": "set by source-only memory probe before training",
+    "loss": "BCEWithLogitsLoss mean",
+    "gradient_clip": 0.5,
+    "early_stopping_patience": 15,
+    "checkpoint": "minimum validation BCE",
+    "threshold_logit": 0.0,
+    "precision": "float32",
+    "train_drop_last": true,
+    "validation_test_drop_last": false
+  },
+  "scheduler": {
+    "name": "ReduceLROnPlateau",
+    "factor": 0.5,
+    "patience": 7,
+    "min_lr": 1e-06
+  },
+  "corrections": [
+    "coordinate slices j:j+3 replaced by all XYZ columns (equivalent 3*j:3*j+3)",
+    "split original sequences before augmentation; no augmented source in validation/test",
+    "fit scaler on source training only",
+    "warp time labels together with skeleton",
+    "keep partial evaluation batches"
+  ],
+  "limitations": [
+    "public source82 sequences all include impact, no independent ADL clip",
+    "published split membership not available; new recorded seed42 split",
+    "official graph indices retained, their anatomical naming not independently verified",
+    "original network 74966881 parameters differs from paper table37.1M; no architecture alteration",
+    "source reproduction metrics not directly identical to paper protocol"
+  ],
+  "device": "physical GPU0 only",
+  "target_used_for_training": false
+}

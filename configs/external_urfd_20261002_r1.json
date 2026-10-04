@@ -1,0 +1,95 @@
+{
+  "experiment_id": "EXTERNAL_URFD_20261002_R1",
+  "historical_exact_reproduction": false,
+  "output": "data/fall_processed/RGB/external_urfd_20261002_r1",
+  "asset_root": "checkpoint/rgb_frontend_20260928_r1",
+  "alignment": "data/fall_processed/RGB/external_urfd_20261002_r1/plan.json",
+  "alignment_sha256": "ac04c17cad8955235ced7958c8c49dc80dd8d8669d8675a164853c471dc34918",
+  "video_root": "data/source_archives/OmniFall/oops_original_818_20260923",
+  "plan": "complete official manifest, no prediction-based sample selection",
+  "sample_count": 70,
+  "sampling": "existing actualPTS past-only25fps; different from historical nearest-frame",
+  "detector": {
+    "base_conf": 0.25,
+    "base_imgsz": 640,
+    "fallback_conf": 0.05,
+    "fallback_imgsz": 960,
+    "iou": 0.7,
+    "class_id": 0,
+    "max_det": 300,
+    "tracker_iou": 0.7,
+    "tracker_conf": 0.3,
+    "missing": "zero invalid; previous last valid box retained; no interpolation or predicted box",
+    "tie": "first candidate"
+  },
+  "pose_config": "third_party/ViTPose/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/ViTPose_base_coco_256x192.py",
+  "vitpose_commit": "c050ed29112da7704797cc1a65af0234b525010d",
+  "pose_inference": "official mmpose BGR pipeline, UDP, configured flip TTA; keypoints XY original image; strict COCO17 checkpoint",
+  "quality": {
+    "bbox_coverage_min": 0.8,
+    "pose_coverage_min": 0.8,
+    "pelvis_median_min": 0.3,
+    "pose_valid": "all XY/score finite and any positive confidence; median pelvis=min(hip11,hip12) over all frames including invalid zeros"
+  },
+  "lifting_source_config": "configs/safer_v2_document_reconstruction_v1.json",
+  "lifting": {
+    "window": 243,
+    "stride": 121,
+    "weight": "triangular",
+    "edge_floor": 0.05,
+    "flip_tta": true,
+    "batch": 4,
+    "offline": true
+  },
+  "inference": {
+    "global_config": "configs/global_motion_document_reconstruction_v1.json",
+    "global_config_sha256": "98bc49a215b08e849117cc220073fe898e3ff57db65cea6e3ae2cf0e81f89e60",
+    "global_report_sha256": "14e6ab40368dacf56c95382644c8e65e93ece35a81d2e268f91fa8789b76dcaf",
+    "window": 64,
+    "stride": 8,
+    "append_tail": false,
+    "batch": 32,
+    "cpu_head_atol": 0.0001,
+    "cpu_head_rtol": 1e-05,
+    "classes": [
+      "other",
+      "fall",
+      "lie_down",
+      "lying_down"
+    ],
+    "training": false,
+    "threshold_fitting": false,
+    "G2_deployment_selected": false
+  },
+  "execution": {
+    "gpu": "0",
+    "threads": 2,
+    "seed": 0,
+    "reserve_gib": 48,
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.6,
+    "max_added_gib": 1,
+    "pause": "PAUSE_REQUESTED at safe frame/batch boundaries"
+  },
+  "newly_specified": [
+    "official-linked distribution pin for lost ViTPose weights",
+    "exact missing track/tie/quality aggregation policy",
+    "current reconstructed global131/scaler/J1 lineage",
+    "past-only timestamps and no appended64frame tail",
+    "fixed OOPS first3 engineering smoke instead of unavailable historical GMDCSA pair",
+    "single physicalGPU0"
+  ],
+  "scope": "offline external sequence classification, G0 primary, no target training or calibration",
+  "evaluation": {
+    "primary": "G0 (source validation comparator; G2 not adopted)",
+    "prediction": "any complete 64-frame window with 4-class argmax fall(index1)",
+    "short_sequences": "no padding; <64 canonical frames gives no alarm and explicitly unprocessed",
+    "input_exception": "adl-37 retained as processing failure; no inference; no alarm",
+    "quality_reject": "no alarm; retain every video in confusion matrix and report coverage",
+    "target_training": false,
+    "target_threshold_fitting": false,
+    "event_metrics": false,
+    "urfd": "camera0 all70",
+    "mcfd": "per-camera video all192; scenario grouped; no multi-view fusion"
+  }
+}

@@ -1,0 +1,11 @@
+model,label,scope,videos,role,metric_unit,positive_class,precision_pct,recall_pct,f1_pct
+own,사용자 DSTE/J1/G0,le2i130,130,사용자 모델,video,fall,95.55555555555556,86.86868686868688,91.005291005291
+own,사용자 DSTE/J1/G0,cauca100,100,사용자 모델,video,fall,97.5,78.0,86.66666666666667
+hfd_reproduction,HFD 3D-CNN+SVM 재학습,le2i130,130,선정 외부 비교 모델,video,fall,86.20689655172413,25.252525252525253,39.0625
+hfd_reproduction,HFD 3D-CNN+SVM 재학습,cauca100,100,선정 외부 비교 모델,video,fall,51.61290322580645,96.0,67.13286713286713
+privacy_x3d_uda_rgb,Privacy X3D-UDA (RGB 입력),le2i130,130,선정 외부 비교 모델,video,fall,98.21428571428571,55.55555555555556,70.96774193548387
+privacy_x3d_uda_rgb,Privacy X3D-UDA (RGB 입력),cauca100,100,선정 외부 비교 모델,video,fall,60.256410256410255,94.0,73.4375
+usdrl_ntu60,USDRL/DSTE + NTU60 분류기,le2i130,130,원본 기반 기준모델,video,fall,98.63013698630137,72.72727272727273,83.72093023255815
+usdrl_ntu60,USDRL/DSTE + NTU60 분류기,cauca100,100,원본 기반 기준모델,video,fall,90.9090909090909,40.0,55.55555555555556
+flash,FLASH 재학습,le2i130,130,선정 외부 비교 모델,video,fall,76.15384615384615,100.0,86.46288209606988
+flash,FLASH 재학습,cauca100,100,선정 외부 비교 모델,video,fall,49.494949494949495,98.0,65.77181208053692

@@ -1,0 +1,22 @@
+{
+  "experiment_id": "S0A_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "historical_exact_reproduction": false,
+  "data_root": "data/fall_processed/SAFER-Activities/v3_document_reconstruction_20260922_r3",
+  "data_report_sha256": "6f4d6d64a9534055f7375aba38696aaae8b464b27a13433ac97a303751e7993c",
+  "encoder": "checkpoint/ntu60/xsub/ntu60_xs_joint_dste.pth.tar",
+  "encoder_sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064",
+  "adl_head": "checkpoint/adl_baseline/ntu60_xsub_joint_dste_official_umurl_seed0_gpu0_epoch150/best_adl_head.pth",
+  "adl_head_sha256": "8f160507d061e62d1cd4f3761b0117cdcc27cb67678a567a21bc76b3a290606f",
+  "output": "checkpoint/fall/S0A_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "classes": ["no_label", "stand", "stand_activity", "walk", "sit", "sit_activity", "sitting_down", "getting_up", "bend", "unstable", "fall", "lie_down", "lying_down", "reach", "run", "jump"],
+  "sources": {
+    "historical": "fall_project_complete_record_2026-08-23_v4.md section S0-A, lines 4246-4289",
+    "labels": "https://github.com/safer-activities/SAFER-Activities/blob/994ed688ce9e491245ee96c1665e948c6ce6c74d/preprocessing/mappings.json",
+    "segment_edit": "https://github.com/yabufarha/ms-tcn/blob/0e418c029c2de1e90f6c54f45a0c186d8d9977b0/eval.py",
+    "new_optimizer_basis": "official FoundSkelModel linear evaluation; explicit recovery control, not recovered historical S0 optimizer"
+  },
+  "input": {"window": 64, "stride": 8, "fps": 25, "append_tail": false, "feature_dim": 2048, "pool": "input-valid person-joint spatial mean broadcast, temporal prepool", "split_counts": {"train": 609183, "val": 106680, "test": 219896, "ood": 71964}},
+  "training": {"epochs": 12, "batch_size": 128, "seed": 0, "optimizer": "SGD", "lr": 0.006, "momentum": 0.9, "weight_decay": 0.0, "scheduler": "constant", "initialization_std": 0.01, "bias": 0.0, "candidates": ["plain", "sqrt"], "sqrt_counts": "unique covered train frames", "sqrt_normalization": "mean weight 1", "shuffle": "torch randperm CPU with seed+epoch", "drop_last": false, "loss_reduction": "weighted mean over all 64 frames of each window", "precision": "float32, no AMP or TF32", "gradient_clip": null},
+  "evaluation": {"selection": ["macro_f1", "segment_f1_50", "edit"], "tie": "earliest epoch then plain before sqrt", "fusion": "float64 accumulate raw logits, divide coverage, cast float32; no smoothing", "classes_in_metrics": "all 16 including no_label=0", "segments": "chronological best-IoU matching, aggregate TP/FP/FN across sequences", "edit": "mean normalized segment-label Levenshtein over sequences", "switches": "total adjacent switches / total covered minutes", "transitions": [[10,12],[6,4],[12,7]], "transition_tolerance_frames": 12, "transition_matching": "direct adjacent labels, earliest unmatched prediction within +/-12 frames; supplemental not historically equivalent", "holdouts": "test and ood payloads only after immutable validation selection"},
+  "execution": {"reserve_gib": 64, "minimum_gpu_free_gib": 12, "gpu_memory_fraction": 0.65, "checkpoint_batches": 64, "smoke_windows": 128, "smoke_epochs": 1, "dense_feature_cache": false, "pause_file": "PAUSE_REQUESTED", "expected_new_output_gib_max": 1}
+}

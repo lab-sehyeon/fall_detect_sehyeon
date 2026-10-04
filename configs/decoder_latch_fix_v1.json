@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "role": "post_defect_fix_rerun",
+  "pristine_untouched_external": false,
+  "source_mode": "D0_LEGACY",
+  "target_mode": "D1_DECOUPLED",
+  "target_rule": "g2_argmax_fall_rising_edge",
+  "refractory_seconds": 0.0,
+  "recovery_branch_must_be_exactly_invariant": true,
+  "forbid_post_result_changes": [
+    "fall_alert_rule",
+    "refractory",
+    "event_matching_tolerance",
+    "video_quality_gate",
+    "weights",
+    "scaler",
+    "threshold"
+  ]
+}

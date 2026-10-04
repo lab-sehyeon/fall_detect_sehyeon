@@ -1,0 +1,22 @@
+dataset,test,model,task_training,target_dataset_finetuning_included,recall_percent,specificity_percent,fall_f1_percent,result_origin,source,positive_label,evaluated_unit
+GMDCSA24,gmdcsa24-cs test,Ours: frozen DSTE + J1 + G0,SAFER/FU J1; SAFER G0,False,29.411764705882355,93.42105263157895,37.03703703703704,Direct run and independent audit,2026-10-02_omnifall_gmdcsa_benchmark_shared.md,fall only,GT segment
+GMDCSA24,gmdcsa24-cs test,Qwen3-VL-8B,Zero-shot,False,58.8,94.7,64.5,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+GMDCSA24,gmdcsa24-cs test,InternVL3.5-8B,Zero-shot,False,58.8,92.1,60.6,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+GMDCSA24,gmdcsa24-cs test,VideoMAE-K400,CMDFall CS,False,64.7,89.5,61.1,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+GMDCSA24,gmdcsa24-cs test,VideoMAE-K400,OF-Staged,True,88.2,93.4,81.1,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+GMDCSA24,gmdcsa24-cs test,VideoMAE-K400,OF-Synthetic,False,52.9,97.4,64.3,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+GMDCSA24,gmdcsa24-cs test,VideoMAE-K400,OF-Staged + OF-Synthetic,True,64.7,94.7,68.8,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+Le2i,le2i-cs test,Ours: frozen DSTE + J1 + G0,SAFER/FU J1; SAFER G0,False,36.36363636363637,100.0,53.333333333333336,Direct run and independent audit,2026-10-02_omnifall_le2i_benchmark_shared.md,fall only,GT segment
+Le2i,le2i-cs test,Qwen3-VL-8B,Zero-shot,False,9.1,99.4,16,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+Le2i,le2i-cs test,InternVL3.5-8B,Zero-shot,False,27.3,98.3,38.7,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+Le2i,le2i-cs test,VideoMAE-K400,CMDFall CS,False,77.3,97.8,79.1,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+Le2i,le2i-cs test,VideoMAE-K400,OF-Staged,True,100,100,100,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+Le2i,le2i-cs test,VideoMAE-K400,OF-Synthetic,False,59.1,100,74.3,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+Le2i,le2i-cs test,VideoMAE-K400,OF-Staged + OF-Synthetic,True,100,99.4,97.8,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,Ours: frozen DSTE + J1 + G0,SAFER/FU J1; SAFER G0,False,33.33333333333333,100.0,50.0,Direct run and independent audit,2026-10-02_omnifall_cauca_benchmark_shared.md,fall only,GT segment
+CAUCA,caucafall-cs test,Qwen3-VL-8B,Zero-shot,False,100,92.1,85.7,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,InternVL3.5-8B,Zero-shot,False,100,86.8,78.3,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,CMDFall CS,False,66.7,100,80,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,OF-Staged,True,88.9,100,94.1,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,OF-Synthetic,False,77.8,94.7,77.8,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,OF-Staged + OF-Synthetic,True,100,100,100,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment

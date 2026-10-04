@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+message_file="${1:?commit message file is required}"
+subject="$(head -n 1 "$message_file")"
+
+if [[ "$subject" =~ ^(Merge|Revert)[[:space:]] ]] ||
+   [[ "$subject" =~ ^(fixup!|squash!)[[:space:]] ]]; then
+  exit 0
+fi
+
+if [[ ! "$subject" =~ ^(Feat|Fix|Docs|Refactor|Design|Test):[[:space:]].+ ]]; then
+  cat >&2 <<'EOF'
+Invalid commit message.
+
+Use: <Type>: <summary>
+Types: Feat, Fix, Docs, Refactor, Design, Test
+Example: Feat: add SAFER label alignment
+EOF
+  exit 1
+fi

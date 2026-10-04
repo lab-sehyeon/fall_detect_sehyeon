@@ -1,0 +1,26 @@
+name: ♻️ Refactoring
+description: 동작을 유지하는 구조 개선 작업을 정의합니다.
+title: "[Refactor] "
+labels: []
+body:
+  - type: textarea
+    id: target
+    attributes:
+      label: 대상과 배경
+      description: 개선할 구조와 현재 문제를 작성해주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: invariants
+    attributes:
+      label: 유지해야 할 동작
+      description: 변경 전후 동일해야 하는 API, 결과와 재현 계약을 작성해주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건
+      description: 동등성 검사와 테스트 기준을 작성해주세요.
+    validations:
+      required: true

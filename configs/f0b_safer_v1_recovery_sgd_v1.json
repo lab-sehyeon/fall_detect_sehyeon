@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "status": "approved_explicit_recovery_configuration",
+  "experiment_id": "F0B_SAFER_V1_RECOVERY_SGD_R1",
+  "claim_boundary": {
+    "original_f0b_optimizer_config_recovered": false,
+    "historical_representation_and_selection_contract_recovered": true,
+    "configuration_kind": "preregistered_recovery_control",
+    "must_not_be_called_historical_exact_reproduction": true
+  },
+  "sources": {
+    "architecture_and_selection": "preserved project record sections 3.8, 3.22 and 3.50",
+    "optimizer_initialization_and_plain_loss": "official FoundSkelModel action_recognition.py linear evaluation",
+    "gpu_override": "project physical GPU 0 allocation rule"
+  },
+  "input": {
+    "feature_cache_manifest_sha256": "15df6f0879d73e70da9b65c4144771fb5848eac06a2e8615ec7cc2419cab3b49",
+    "materialization_manifest_sha256": "2f9ccc36ed247e997dd5ee948aaec201996305594641c2267c02d9a9d577a1fc",
+    "encoder_sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064",
+    "adl_head_sha256": "8f160507d061e62d1cd4f3761b0117cdcc27cb67678a567a21bc76b3a290606f",
+    "extractor_sha256": "b314a5c4108febf3666942974b9af76a3f4cdbb7e1c386c638bf9eb3ddbaded3",
+    "split_feature_manifest_sha256": {
+      "train": "6ce015fe8eca29df627e4aa840cb5f57fd52827923a361e8346d565a842927fb",
+      "val": "1d207f7828ab03d059e198f7d4f22c6cb9527ca072fcb8ebc871f5c8b6adf4ee"
+    },
+    "split_counts": {
+      "train": 599986,
+      "val": 104589
+    },
+    "class_counts": {
+      "train": [567885, 7168, 22698, 2235],
+      "val": [97083, 1693, 5253, 560]
+    },
+    "class_names": ["other", "fall", "lie_down", "lying_down"],
+    "allowed_splits": ["train", "val"],
+    "test_ood_access": false
+  },
+  "candidates": [
+    {
+      "name": "temporal_only",
+      "feature_names": ["temporal"],
+      "input_dim": 1024,
+      "num_classes": 4
+    },
+    {
+      "name": "temporal_spatial",
+      "feature_names": ["temporal", "spatial"],
+      "input_dim": 2048,
+      "num_classes": 4
+    }
+  ],
+  "optimization": {
+    "epochs": 50,
+    "batch_size": 512,
+    "optimizer": "SGD",
+    "learning_rate": 0.006,
+    "momentum": 0.9,
+    "weight_decay": 0.0,
+    "lr_schedule_milestones": [120, 140],
+    "lr_schedule_gamma": 0.1,
+    "loss": "CrossEntropyLoss",
+    "class_weight": null,
+    "weight_initialization": {
+      "distribution": "normal",
+      "mean": 0.0,
+      "std": 0.01
+    },
+    "bias_initialization": 0.0,
+    "seed": 0,
+    "train_shuffle": true,
+    "same_minibatch_order_for_candidates": true,
+    "drop_last": false
+  },
+  "evaluation": {
+    "every_epochs": 1,
+    "batch_size": 512,
+    "primary_selection_metric": "validation_macro_f1_4class",
+    "secondary_selection_metric": "validation_conditional_fall_vs_lie_auprc",
+    "conditional_labels": [1, 2, 3],
+    "conditional_positive_label": 1,
+    "conditional_score": "softmax_over_logits_classes_1_2_3_probability_of_class_1",
+    "epoch_exact_tie": "earliest_epoch",
+    "candidate_exact_tie": "first_preregistered_candidate",
+    "early_stopping": false,
+    "test_ood_evaluation": "forbidden_until_selection_manifest_is_frozen"
+  },
+  "execution": {
+    "physical_cuda_visible_devices": "0",
+    "logical_device": "cuda:0",
+    "deterministic_algorithms": true,
+    "cublas_workspace_config": ":4096:8"
+  }
+}

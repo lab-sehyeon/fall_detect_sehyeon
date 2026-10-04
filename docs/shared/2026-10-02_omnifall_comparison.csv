@@ -1,0 +1,6 @@
+model,task_training,recall_percent,specificity_percent,fall_f1_percent,result_origin,source,test,positive_label,evaluated_unit
+Qwen3-VL-8B,Zero-shot,58.8,94.7,64.5,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,gmdcsa24-cs test,fall only,GT segment
+InternVL3.5-8B,Zero-shot,58.8,92.1,60.6,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,gmdcsa24-cs test,fall only,GT segment
+VideoMAE-K400,CMDFall CS,64.7,89.5,61.1,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,gmdcsa24-cs test,fall only,GT segment
+VideoMAE-K400,OF-Synthetic Ra,52.9,97.4,64.3,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,gmdcsa24-cs test,fall only,GT segment
+Ours: fixed RGB + J1 adapter + G0,SAFER/FU adapter; SAFER G0,29.411764705882355,93.42105263157895,37.03703703703704,Direct run and independent audit 2026-10-02,2026-10-02_omnifall_gmdcsa_benchmark_shared.md,gmdcsa24-cs test,fall only,GT segment

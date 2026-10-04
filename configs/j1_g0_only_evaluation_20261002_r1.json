@@ -1,0 +1,89 @@
+{
+  "experiment_id": "J1_G0_ONLY_20261002_R1",
+  "output": "data/fall_processed/RGB/j1_g0_only_20261002_r1",
+  "model": {
+    "encoder": {
+      "path": "checkpoint/ntu60/xsub/ntu60_xs_joint_dste.pth.tar",
+      "sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064"
+    },
+    "j1": {
+      "path": "checkpoint/fall/JOINT_V3_DOCUMENT_RECONSTRUCTION_20260922_R3/v3/final/final_j1.pt",
+      "sha256": "2d897a10e5a2f0d03ef743906bfcbc45c9acc1a6397d6dc1bef880387cb69cea"
+    },
+    "g0": {
+      "path": "checkpoint/fall/GLOBAL_MOTION_DOCUMENT_RECONSTRUCTION_20260928_R1/G0/epoch_005.pt",
+      "sha256": "d1d6870e81e154c8b6bfc3138eb16f8e9e8324d5fedcd5a4c808423f2cc632ce"
+    }
+  },
+  "sources": {
+    "le2i_cs38": {
+      "root": "data/fall_processed/RGB/omnifall_le2i_continuous_20261002_r1",
+      "config": "configs/omnifall_le2i_continuous_20261002_r1.json",
+      "videos": 38,
+      "positive": 22,
+      "unit": "event",
+      "audit": "data/fall_processed/RGB/omnifall_le2i_continuous_20261002_r1/independent_audit.json"
+    },
+    "le2i_127": {
+      "root": "data/fall_processed/RGB/le2i_current_evaluation_20261002_r1",
+      "config": "configs/le2i_current_evaluation_20261002_r1.json",
+      "videos": 127,
+      "positive": 96,
+      "unit": "event",
+      "audit": "data/fall_processed/RGB/le2i_current_evaluation_20261002_r1/independent_audit.json"
+    },
+    "urfd70": {
+      "root": "data/fall_processed/RGB/external_urfd_20261002_r1",
+      "config": "configs/external_urfd_20261002_r1.json",
+      "videos": 70,
+      "positive": 30,
+      "unit": "sequence",
+      "audit": "docs/internal/2026-10-02_evidence_audit/urfd_independent_audit.json"
+    }
+  },
+  "architecture": "frozen DSTE backbone -> J1 adapter -> G0 Linear2048x4",
+  "excluded_active_branches": [
+    "ADL60",
+    "J1.safer_head",
+    "J1.fu_head",
+    "G1",
+    "G2",
+    "global131",
+    "global_scaler"
+  ],
+  "inference": {
+    "window": 64,
+    "stride": 8,
+    "append_tail": false,
+    "batch": 32,
+    "fps": 25,
+    "atol": 0.0001,
+    "rtol": 1e-05,
+    "classes": [
+      "other",
+      "fall",
+      "lie_down",
+      "lying_down"
+    ]
+  },
+  "preprocessing": "reuse validated whole-video frontend/3D tensors unchanged; no fresh pixel/pose inference",
+  "evaluation": {
+    "event": "existing D1 rising edge early0.5 late3 seconds",
+    "sequence": "existing any class1 complete-window prediction",
+    "quality_rejection": "no alarm, retain all inputs",
+    "retraining": false,
+    "threshold_fitting": false,
+    "selection": false,
+    "old_outputs_used_only_for_regression": true
+  },
+  "execution": {
+    "gpu": "0",
+    "threads": 2,
+    "seed": 0,
+    "reserve_gib": 64,
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.6,
+    "max_added_gib": 2,
+    "pause": "PAUSE_REQUESTED at safe frame/batch boundaries"
+  }
+}

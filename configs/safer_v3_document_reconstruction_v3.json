@@ -1,0 +1,113 @@
+{
+  "experiment_id": "SAFER_V3_DOCUMENT_RECONSTRUCTION_20260922_R3",
+  "historical_exact_reproduction": false,
+  "source_contract": "configs/safer_v2_document_reconstruction_v1.json",
+  "source_config_sha256": "9b038f6a986093144638f8b620f72d57aa2f11fe63c83c894929bdca042a63c6",
+  "v2_root": "data/fall_processed/SAFER-Activities/v2_document_reconstruction_20260920_r1",
+  "v2_final_sha256": "0077a9207b51a066e43c8f5a0e908744ddf8f71c81854882d2c95c5f00634633",
+  "pilot": {
+    "split": "train",
+    "seed": 0,
+    "count": 8,
+    "min_frames": 729,
+    "max_frames": 5000,
+    "sampling": "sort SHA256(UTF8(str(seed)+'|'+unmodified frame_dir)); take8; no activity parsing or labels",
+    "policies": [
+      [
+        243,
+        "uniform"
+      ],
+      [
+        121,
+        "uniform"
+      ],
+      [
+        121,
+        "triangular"
+      ],
+      [
+        121,
+        "hann"
+      ],
+      [
+        81,
+        "triangular"
+      ],
+      [
+        81,
+        "hann"
+      ]
+    ],
+    "ranking": [
+      "s121_triangular",
+      "s121_hann",
+      "s121_uniform",
+      "s81_triangular",
+      "s81_hann"
+    ],
+    "raw_prediction": "once per stride per sequence, same batch4 flipTTA as reconstructed V2",
+    "gate": {
+      "seam_reduction_min": 0.75,
+      "nme_p95_ratio_max": 1.05,
+      "bone_cv_p95_ratio_max": 1.05,
+      "speed_p99_ratio_max": 1,
+      "baseline_max_abs": 0.0001,
+      "root_exact_zero": true
+    }
+  },
+  "geometry": {
+    "window": 243,
+    "edge_floor": 0.05,
+    "epsilon": 1e-8,
+    "local_radius": 5,
+    "seams": "union of internal starts and ends; displacement b-1 to b, exclude clip edges",
+    "local_jump": "mean nonroot joint speed at seam / median of up to5 preceding and5 following speed frames, excluding seam; pelvis-relative in 2D/3D",
+    "artifact": "3D local jump >3 and 2D local jump <2",
+    "nme": "per-frame positive least-squares isotropic scale from root-relative H36M3D XY to official converted H36M2D XY; mean nonroot joint error / 2D joint-bbox diagonal; no rotation, no label or confidence weighting",
+    "bone_cv": "population temporal std / mean for each of16 H36M tree bones; concatenate sequence-bone CVs",
+    "speed": "per-frame mean nonroot Euclidean displacement / sequence median mean bone length; native-frame unit, no FPS conversion",
+    "aggregation": "pool all frame NME/speed, all sequence-bone CVs and all seam counts; numpy linear percentiles",
+    "overlap_diagnostics": "adjacent-window shared-frame pelvis-relative shape RMS, mean-bone scale ratio, shoulder/spine angles; diagnostic only",
+    "valid_support": {
+      "source_frame": "finite COCO->H36M XY bbox diagonal > epsilon; reject nonfinite input",
+      "seam": "all source frames in [max(0,b-1-radius),min(T,b+radius+1)) valid; do not shorten reference stencil",
+      "nme": "source-valid frames only, identical mask for saved V2 and every candidate",
+      "full_timeline": "3D projection denominator, bones, speed, root remain unmasked",
+      "coverage": "report counts per sequence and aggregate; require nonempty aggregate evidence; no post-hoc cutoff"
+    }
+  },
+  "full": {
+    "geometry_reference": "all30 official OOD sequences, geometry only after pilot policy lock; never labels/classifier/selection",
+    "gate": "same four geometry ratios versus saved V2; no policy reselection after full evaluation",
+    "sequence_cache": "one float32 NTU25[T,25,3] array per sequence plus root/labels; runtime64/8 slices, no duplicate38GB materialization",
+    "expected_windows": {
+      "train": 609183,
+      "val": 106680,
+      "test": 219896,
+      "ood": 71964
+    }
+  },
+  "execution": {
+    "physical_gpu": "0",
+    "cpu_threads": 2,
+    "reserve_gib": 64,
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.35,
+    "full_output_gib_upper_bound": 16,
+    "batch_size": 4,
+    "amp": false,
+    "tf32": false,
+    "deterministic": true,
+    "pause": "completed sequence boundary"
+  },
+  "newly_specified_not_recovered": [
+    "precise local jump/reprojection/bone/speed formulas and aggregation",
+    "seed0 and candidate tie ranking",
+    "same batch4 avoids historical batch8 discrepancy; no relaxed reconciliation",
+    "full raw predictions retained for exact independent fusion audit",
+    "GPU0 only",
+    "R2 geometry-only IO prevents DSTE/MotionAGFormer module collision; no metric/threshold change",
+    "R3 post-hoc source-only valid-support geometry evaluation; no frame/window removal or model/threshold changes"
+  ],
+  "output_dir": "data/fall_processed/SAFER-Activities/v3_document_reconstruction_20260922_r3"
+}

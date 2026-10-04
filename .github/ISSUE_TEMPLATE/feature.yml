@@ -1,0 +1,26 @@
+name: ✨ Feature
+description: 새로운 기능을 제안하거나 구현 작업을 정의합니다.
+title: "[Feat] "
+labels: []
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: 목표
+      description: 해결하려는 문제와 기대 결과를 작성해주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: 작업 범위
+      description: 구현할 항목과 제외할 항목을 작성해주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 조건
+      description: 테스트하거나 확인할 수 있는 완료 기준을 작성해주세요.
+    validations:
+      required: true

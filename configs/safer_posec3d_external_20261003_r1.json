@@ -1,0 +1,65 @@
+{
+  "experiment_id": "SAFER_POSEC3D_EXTERNAL_20261003_R1",
+  "scopes": [
+    "le2i38",
+    "gmdcsa37",
+    "cauca19"
+  ],
+  "output": "data/fall_processed/RGB/safer_posec3d_external_20261003_r1",
+  "videos": 94,
+  "windows": 2765,
+  "fps": 25,
+  "window": 64,
+  "stride": 8,
+  "append_tail": false,
+  "input": "unchanged exact-PTS canonical frontend, shared YOLOv8x and ViTPose COCO17",
+  "own_model": "DSTE/J1/G0; hash-verified existing predictions and existing quality rejections",
+  "comparator": "SAFER author PoseC3D SlowOnly-R50 non-wheelchair epoch44",
+  "upstream_revision": "85525521b85a44c5df79873102192225c9565edc",
+  "weight_sha256": "386d5580d612f9aa40801a2724945eeb4c2d1182c0f81e5e07c8ae5757470124",
+  "source_training": {
+    "own": [
+      "NTU60",
+      "SAFER-Activities",
+      "FU-Kinect-Fall"
+    ],
+    "posec3d": [
+      "SAFER-Activities non-wheelchair sub_train"
+    ]
+  },
+  "posec3d_test": "official Sequential48,compact,64x64,sigma0.6,confidence,flip,mean2softmax; trailing48 at common endpoints",
+  "posec3d_fall_index": 9,
+  "posec3d_window": 48,
+  "trailing_offset": 16,
+  "own_fall_index": 1,
+  "decision": "original multiclass argmax mapped to binary",
+  "inference": {
+    "max_testing_views": 4,
+    "dtype": "float32",
+    "amp": false
+  },
+  "quality": "own original gate; PoseC3D no 3D gate, zero-score missing poses retained; all failures counted",
+  "evaluation": {
+    "event": "rising edge at window endpoint; early0.5/late3; one-to-one; refractory0",
+    "video": "any fall argmax window; max fall score for AP",
+    "primary": "event F1",
+    "paired_bootstrap": "10000 video draws per dataset, seed20261003; exploratory 95% percentile CI"
+  },
+  "execution": {
+    "gpu": "0",
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.6,
+    "reserve_gib": 64
+  },
+  "target_training": false,
+  "target_tuning": false,
+  "untouched_target": false,
+  "official_ntu_reproduction": false,
+  "limitations": [
+    "different source training and label spaces",
+    "shared ViTPose-B replaces comparator source ViTPose-H input",
+    "common64-frame decision grid; comparator uses native trailing48 continuous frames",
+    "offline own lifting and normalization",
+    "existing target diagnostic exposure; 2/1/2 held-out subjects, clustered-video bootstrap is descriptive"
+  ]
+}

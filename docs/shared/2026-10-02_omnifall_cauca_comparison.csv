@@ -1,0 +1,8 @@
+dataset,test,model,task_training,target_dataset_finetuning_included,recall_percent,specificity_percent,fall_f1_percent,result_origin,source,positive_label,evaluated_unit
+CAUCA,caucafall-cs test,Ours: frozen DSTE + J1 + G0,SAFER/FU J1; SAFER G0,False,33.33333333333333,100.0,50.0,Direct run and independent audit,2026-10-02_omnifall_cauca_benchmark_shared.md,fall only,GT segment
+CAUCA,caucafall-cs test,Qwen3-VL-8B,Zero-shot,False,100,92.1,85.7,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,InternVL3.5-8B,Zero-shot,False,100,86.8,78.3,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,CMDFall CS,False,66.7,100,80,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,OF-Staged,True,88.9,100,94.1,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,OF-Synthetic,False,77.8,94.7,77.8,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment
+CAUCA,caucafall-cs test,VideoMAE-K400,OF-Staged + OF-Synthetic,True,100,100,100,OmniFall v3 Table 3 reported; not rerun,https://arxiv.org/html/2505.19889v3,fall only,GT segment

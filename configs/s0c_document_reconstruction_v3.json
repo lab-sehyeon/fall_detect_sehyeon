@@ -1,0 +1,67 @@
+{
+  "experiment_id": "S0C_DOCUMENT_RECONSTRUCTION_20260929_R3",
+  "output": "checkpoint/fall/S0C_DOCUMENT_RECONSTRUCTION_20260929_R3",
+  "s0b_config": "configs/s0b_document_reconstruction_v3.json",
+  "historical_exact_reproduction": false,
+  "sources": [
+    "s0a",
+    "s0b"
+  ],
+  "grid": {
+    "ema_alpha": [
+      0.5,
+      0.7,
+      0.85
+    ],
+    "minimum_duration": [
+      3,
+      5,
+      8
+    ],
+    "margin": [
+      0,
+      0.05
+    ],
+    "candidates_per_source": 22,
+    "total_candidates": 44
+  },
+  "decoder": {
+    "ema": "p0=softmax(logits0); p_t=alpha*p_(t-1)+(1-alpha)*softmax(logits_t)",
+    "precision": "float64 probability and EMA",
+    "hysteresis": "argmax proposal must exceed emitted-class probability by >=margin for minimum_duration consecutive frames; reset count if condition or proposed label changes; emit on confirmation frame only",
+    "sequence_reset": true,
+    "tie": "numpy argmax first ID; if current emitted label equals argmax reset pending",
+    "no_retroactive_updates": true,
+    "upstream_causal": false
+  },
+  "evaluation": {
+    "macro_drop_max": 0.005,
+    "fall_recall_drop_max": 0.02,
+    "switch_reduction_min": 0.25,
+    "gate_reference": "each source own raw baseline",
+    "selection": [
+      "segment_f1_50",
+      "edit",
+      "macro_f1"
+    ],
+    "ties": "source s0a then s0b, declared candidate order",
+    "if_no_eligible": "best lexicographic diagnostic only, adoption=false",
+    "holdouts": "only selected source after immutable val-only selection"
+  },
+  "latency_diagnostic": {
+    "gt": "direct adjacent pairs 10->12,6->4,12->7 on covered labels",
+    "successor_run_frames": 3,
+    "after_boundary_frames": 50,
+    "before_boundary_frames": 25,
+    "future_used_for_offline_diagnostic_only": true,
+    "selection_uses_diagnostic": false,
+    "newly_specified": "first stable successor onset>=boundary through boundary+50 inclusive; stable successor anywhere in previous25frames marks premature; no event sharing restriction"
+  },
+  "execution": {
+    "reserve_gib": 64,
+    "new_output_gib_max": 0.15,
+    "cpu_threads": 2,
+    "smoke_frames_per_sequence": 2048,
+    "smoke_sequences": 2
+  }
+}

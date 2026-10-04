@@ -1,0 +1,14 @@
+{
+  "experiment_id": "S0E_DOCUMENT_RECONSTRUCTION_20260930_R1",
+  "output": "checkpoint/fall/S0E_DOCUMENT_RECONSTRUCTION_20260930_R1",
+  "historical_exact_reproduction": false,
+  "s0c_root": "checkpoint/fall/S0C_DOCUMENT_RECONSTRUCTION_20260929_R3",
+  "s0c_report_sha256": "f2c760b29e12fd2da89b3d499f2474af8eda89f18a387b075ccd5f4a85497767",
+  "s0c_config": "configs/s0c_document_reconstruction_v3.json",
+  "grid": {"fall_settle": [8,12,16], "recovery_confirmation": [3,5,8], "recovery_hold": [5,8], "sit_confirmation": [0,5,8,12], "count": 72},
+  "rules": {"non_ground": [1,2,3,4,5,6,7,8,9,13,14,15], "ground": [11,12], "fall": 10, "lying": 12, "recovery": 7, "sit_down": 6, "sit": 4},
+  "evaluation": {"macro_drop_max": 0.005, "lying_f1_drop_max": 0.02, "fall_successor_gain_min": 0.10, "recovery_successor_gain_min": 0.10, "sit_premature_reduction_min": 0.05, "sit_successor_drop_max": 0.02, "fall_mask_exact": true, "switch_increase_max": 0.0},
+  "latency": {"successor_run_frames": 3, "after_boundary_frames": 50, "before_boundary_frames": 25},
+  "execution": {"reserve_gib": 64, "estimated_output_gib": 0.016, "smoke_sequences": 2, "smoke_frames": 2048, "cpu_threads": 2},
+  "newly_specified": ["eight gate numeric thresholds", "causal counters/reset semantics", "non-ground set excludes no_label", "fallback/tie selection", "digest-only candidate storage"]
+}

@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "status": "preregistered_post_selection_evaluation",
+  "experiment_id": "F0B_SAFER_V1_RECOVERY_SGD_POSTSELECTION_R1",
+  "claim_boundary": {
+    "original_f0b_optimizer_config_recovered": false,
+    "historical_exact_reproduction": false,
+    "configuration_kind": "post_selection_evaluation_of_preregistered_recovery_control",
+    "must_not_be_called_historical_exact_reproduction": true
+  },
+  "selection_lock": {
+    "training_report_sha256": "9b6690adc24faf37439d589c24806d539718c764f74a1d99d1cd6a9803da6604",
+    "selected_head_sha256": "19a1802b03cf9ef3871ed8fa12caad074f713f25501714ef6a4aae53eb247b6d",
+    "selected_head_state_hash": "50f5e255c323f4ee890aa7363b1dca2595bacc684993128394f539c42f0e6f97",
+    "candidate": "temporal_spatial",
+    "epoch": 46,
+    "validation_primary_metric": "macro_f1_4class",
+    "validation_primary_value": 0.6991296789603211,
+    "validation_secondary_metric": "conditional_fall_vs_lie_auprc",
+    "validation_secondary_value": 0.958140969988534,
+    "selection_frozen_before_test_ood": true,
+    "test_ood_unopened_before_selection": true
+  },
+  "input": {
+    "materialization_manifest_sha256": "2f9ccc36ed247e997dd5ee948aaec201996305594641c2267c02d9a9d577a1fc",
+    "encoder_sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064",
+    "adl_head_sha256": "8f160507d061e62d1cd4f3761b0117cdcc27cb67678a567a21bc76b3a290606f",
+    "adl_run_config_sha256": "ee85eeecb1d0ef5c60fc9b8ba33942a3d8b83c987a163265d538cf61fbb2046d",
+    "f0b_training_config_sha256": "717ed6df87791874d334a2a344763adaee1f8e767f89ea37daed175979865345",
+    "f0b_trainer_sha256": "3a8e4a78b40d66f58b67d618d7226ef6cdfb16be2b5459b360e6e989aee7be1b",
+    "splits": {
+      "test": 216768,
+      "ood": 71964
+    }
+  },
+  "representation": {
+    "temporal": "max over 64 DSTE temporal tokens",
+    "spatial": "max over 50 DSTE spatial tokens",
+    "feature_dim_each": 1024,
+    "selected_input": "concatenate temporal then spatial",
+    "selected_input_dim": 2048,
+    "head": "Linear(2048,4)",
+    "class_names": [
+      "other",
+      "fall",
+      "lie_down",
+      "lying_down"
+    ]
+  },
+  "evaluation": {
+    "split_order": [
+      "test",
+      "ood"
+    ],
+    "batch_size": 256,
+    "decision": "four_class_argmax",
+    "metrics": [
+      "accuracy",
+      "macro_f1_4class",
+      "fall_f1",
+      "all_action_fall_auprc",
+      "conditional_fall_vs_lie_auprc"
+    ],
+    "conditional_labels": [
+      1,
+      2,
+      3
+    ],
+    "conditional_positive_label": 1,
+    "training": false,
+    "optimizer": null,
+    "threshold_fitting": false,
+    "candidate_comparison": false,
+    "checkpoint_reselection": false,
+    "test_ood_used_once_after_validation_selection": true,
+    "historical_v1_reference_percent": {
+      "test": {
+        "macro_f1": 55.584,
+        "fall_f1": 55.242,
+        "conditional_fall_vs_lie_auprc": 96.807
+      },
+      "ood": {
+        "macro_f1": 40.468,
+        "fall_f1": 21.775,
+        "conditional_fall_vs_lie_auprc": 95.216
+      }
+    }
+  },
+  "execution": {
+    "physical_cuda_visible_devices": "0",
+    "logical_device": "cuda:0",
+    "checkpoint_every_batches": 25,
+    "reserve_gib": 10.0
+  }
+}

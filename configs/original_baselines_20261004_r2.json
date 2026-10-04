@@ -1,0 +1,45 @@
+{
+  "experiment_id": "ORIGINAL_BASELINES_20261004_R2",
+  "videos": 230,
+  "datasets": {
+    "le2i130": 130,
+    "cauca100": 100
+  },
+  "model": "RTHFD",
+  "author_commit": "63181df4e1d8172e91ee7b3c958c15b5860ceb29",
+  "source": "https://github.com/ekramalam/RTHFD",
+  "weights_url": "https://tfhub.dev/google/lite-model/movenet/singlepose/thunder/3?lite-format=tflite",
+  "weights_sha256": "8014d8fe22285265f52aa1cea84056b7704f75adf12341a7712d4cb28bd1d9b6",
+  "preprocessing": "original cv2 BGR, tf.image.resize_with_pad(256,256), float32; no RGB conversion",
+  "rules": "exact GMDCSA notebook block; URFD decision AST identical; preserve abs(bool) and final else counter reset",
+  "alarm": "all original cv2.putText T Fall... declarations per frame, rising edges; independently check all true-fall print variants",
+  "timing": "every native frame in order; exact existing rational source PTS, verified decoded frame hashes",
+  "evaluation": {
+    "early_seconds": 0.5,
+    "late_seconds": 3.0,
+    "failure": "no predictions, retain all videos and GT",
+    "video_prediction": "one or more alarm frames anywhere in video"
+  },
+  "execution": {
+    "workers": 4,
+    "tflite_threads_per_worker": 2,
+    "tf_intra_threads": 2,
+    "tf_inter_threads": 1,
+    "device": "CPU"
+  },
+  "runtime": {
+    "tensorflow_cpu": "2.15.1",
+    "numpy": "1.23.5"
+  },
+  "no_training": true,
+  "no_target_tuning": true,
+  "own": "reuse independently audited parent predictions",
+  "external_score_is_original_paper_metric": false,
+  "unavailable": {
+    "HFD": "original fitted fall SVM not obtained",
+    "SDFA": "original fall checkpoint not obtained"
+  },
+  "supersedes": "R1 scores invalid: exact print(Fall) observer missed 20 of 68 original true-fall branches",
+  "model_inference": "reuse unchanged R1 Thunder v3 raw poses; regenerate every rule output; independent pose re-inference audit",
+  "revision_reason": "Original-code output adapter bug fix, no threshold/rule/target tuning"
+}

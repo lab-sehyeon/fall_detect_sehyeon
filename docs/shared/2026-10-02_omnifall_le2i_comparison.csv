@@ -1,0 +1,8 @@
+model,training,recall_percent,specificity_percent,fall_f1_percent,evidence,source,test_protocol,positive,unit
+Frozen DSTE-J1-G0,SAFER/FU adapter plus SAFER G0,36.36363636,100.0,53.33333333,This project independently audited run,2026-10-02_omnifall_le2i_benchmark_shared.md,le2i-cs test,fall only,GT segment
+Qwen3-VL-8B,Zero-shot,9.1,99.4,16.0,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,le2i-cs test,fall only,GT segment
+InternVL3.5-8B,Zero-shot,27.3,98.3,38.7,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,le2i-cs test,fall only,GT segment
+VideoMAE-K400,CMDFall CS,77.3,97.8,79.1,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,le2i-cs test,fall only,GT segment
+VideoMAE-K400,OF-Synthetic Ra,59.1,100.0,74.3,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,le2i-cs test,fall only,GT segment
+VideoMAE-K400,OF-Staged CS includes Le2i,100.0,100.0,100.0,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,le2i-cs test,fall only,GT segment
+VideoMAE-K400,OF-Staged plus Synthetic includes Le2i,100.0,99.4,97.8,OmniFall v3 Table 3 reported,https://arxiv.org/html/2505.19889v3,le2i-cs test,fall only,GT segment

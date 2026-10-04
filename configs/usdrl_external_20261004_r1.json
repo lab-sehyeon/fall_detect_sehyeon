@@ -1,0 +1,22 @@
+{
+  "experiment_id": "USDRL_EXTERNAL_20261004_R1",
+  "model_name": "USDRL DSTE + NTU60 linear head (project-retrained)",
+  "author_trained_classifier": false,
+  "original_paper_protocol": false,
+  "output": "data/fall_processed/RGB/usdrl_external_20261004_r1",
+  "encoder": "checkpoint/ntu60/xsub/ntu60_xs_joint_dste.pth.tar",
+  "encoder_sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064",
+  "head": "checkpoint/adl_baseline/ntu60_xsub_joint_dste_official_umurl_seed0_gpu0_epoch150/best_adl_head.pth",
+  "head_sha256": "8f160507d061e62d1cd4f3761b0117cdcc27cb67678a567a21bc76b3a290606f",
+  "head_config_sha256": "ee85eeecb1d0ef5c60fc9b8ba33942a3d8b83c987a163265d538cf61fbb2046d",
+  "dste_code_sha256": "801fc7fed733084f0372bcad4242866a6ba30ebd74898ea86f735528931a0289",
+  "datasets": {
+    "le2i130": {"parent": "data/fall_processed/RGB/le2i130_20261003_r1", "videos": 130, "events": 99, "processed": 119, "windows": 4082, "evaluation_sha256": "3de9b25419cd395682de8834760eee3d2a3817635d8d1234c612f57e637aa152"},
+    "cauca100": {"parent": "data/fall_processed/RGB/cauca100_20261003_r1", "videos": 100, "events": 50, "processed": 93, "windows": 2204, "evaluation_sha256": "8a8f9babae1c2b02305a254fc2dfb279d4ad333cc196f7f5c4417713adc18617"}
+  },
+  "inference": {"classes": 60, "fall_index": 42, "fps": 25, "window": 64, "stride": 8, "append_tail": false, "batch": 32, "fresh_backbone_forward": true, "j1": false, "g0": false, "training": false},
+  "evaluation": {"decision": "argmax60 == 42 (A043)", "score": "softmax60[:,42]", "events": "rising_edges", "early_seconds": 0.5, "late_seconds": 3.0, "refractory_seconds": 0, "rejections": "retain full denominator, no alarms", "target_training": false, "target_tuning": false},
+  "audit": {"atol": 0.0001, "rtol": 0.00001, "all_pooled_vs_parent": true, "cpu_float64_head_replay": true, "independent_metrics": true, "unchanged_weights": true},
+  "execution": {"gpu": "0", "threads": 2, "seed": 0, "reserve_gib": 64, "minimum_gpu_free_gib": 8, "gpu_memory_fraction": 0.6, "amp": false, "tf32": false, "deterministic": true, "pause": "PAUSE_REQUESTED at batch boundaries"},
+  "sources": ["https://github.com/wengwanjiang/USDRL", "https://github.com/wengwanjiang/USDRL/blob/main/action_recognition.py", "https://rose1.ntu.edu.sg/dataset/actionRecognition/", "configs/safer_v2_controls_document_reconstruction_v1.json", "configs/le2i130_20261003_r1.json", "configs/cauca100_20261003_r1.json"]
+}

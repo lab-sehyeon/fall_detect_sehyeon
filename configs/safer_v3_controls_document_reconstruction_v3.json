@@ -1,0 +1,12 @@
+{
+  "experiment_id": "SAFER_V3_CONTROLS_DOCUMENT_RECONSTRUCTION_20260922_R3",
+  "base_config": "configs/safer_v2_controls_document_reconstruction_v1.json",
+  "base_config_sha256": "dd8d48544045d537e39e2254100ede100615a77af45e9daa4b86abcc4e982296",
+  "preprocessing_config": "configs/safer_v3_document_reconstruction_v3.json",
+  "data_root": "data/fall_processed/SAFER-Activities/v3_document_reconstruction_20260922_r3",
+  "output_dir": "checkpoint/fall/F0_CONTROLS_SAFER_V3_DOCUMENT_RECONSTRUCTION_20260922_R3",
+  "training": "exact reused reconstructed V2 F0B candidates, SGD config, seed, loss, batch/order,50epochs and selection",
+  "inference": "V3 sequence-cache runtime slices; same frozen DSTE/ADL and batch256/noAMP/noTF32",
+  "selection": "validation only, same locking before holdout feature/evaluation",
+  "historical_exact_reproduction": false
+}

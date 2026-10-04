@@ -1,0 +1,33 @@
+name: 🔥 Fix
+description: 재현 가능한 버그와 수정 조건을 기록합니다.
+title: "[Fix] "
+labels: []
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 문제
+      description: 실제 동작과 예상 동작을 작성해주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 재현 방법
+      description: secret과 개인정보를 제외하고 최소 재현 절차를 작성해주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: 환경
+      description: 관련 version과 실행 조건을 작성해주세요.
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 수정 완료 조건
+      description: 회귀 테스트를 포함한 완료 기준을 작성해주세요.
+    validations:
+      required: true

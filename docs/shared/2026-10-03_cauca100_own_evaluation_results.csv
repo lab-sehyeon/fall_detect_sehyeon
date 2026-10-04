@@ -1,0 +1,3 @@
+model,scope,videos,fall_videos,quality_pass,event_tp,event_fp,event_fn,event_precision,event_recall,event_f1,video_tp,video_fp,video_fn,video_precision,video_recall,video_f1,video_tn,video_accuracy,video_specificity,video_ap
+DSTE_J1_G0,cauca100,100,50,93,39,5,11,0.8863636363636364,0.78,0.8297872340425532,39,1,11,0.975,0.78,0.8666666666666667,49,0.88,0.98,0.9360631390643617
+DSTE_J1_G0,cauca19,19,9,18,7,0,2,1.0,0.7777777777777778,0.875,7,0,2,1.0,0.7777777777777778,0.875,10,0.8947368421052632,1.0,0.9192982456140353
