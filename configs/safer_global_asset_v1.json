@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "input_channels": 12,
+  "causal_smoothing": {"kind": "trailing_valid_mean", "frames": 3},
+  "fps": 25.0,
+  "output_dim": 131,
+  "invalid_value": 0.0,
+  "explicit_validity_mask": true,
+  "interpolation": false
+}

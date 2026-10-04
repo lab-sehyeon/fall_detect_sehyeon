@@ -1,0 +1,15 @@
+{
+  "architecture": "DSTE_J1_G0_ONLY",
+  "selection_basis": "user selected J1 adapter and G0 only on 2026-10-02",
+  "backbone": "frozen DSTE",
+  "adapter": "J1ResidualAdapter",
+  "heads": ["G0"],
+  "global_motion_enabled": false,
+  "adl_prediction_enabled": false,
+  "state_recovery_enabled": false,
+  "model_module": "fall_pipeline.external.j1_g0_only",
+  "evaluation_config": "configs/j1_g0_only_evaluation_20261002_r1.json",
+  "evaluation_runner": "scripts/run_j1_g0_evaluation_20261002.py",
+  "legacy_experiments": "preserved, not rewritten or deleted",
+  "deployment_readiness": "research evaluation; not a validated real-time deployment"
+}

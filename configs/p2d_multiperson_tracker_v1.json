@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "status": "implemented_not_adopted",
+  "selected": null,
+  "reason": "No first tracker-dev candidate passed the actor-anchor same-track gate."
+}

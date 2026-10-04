@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "recovered_from_2026-08-27_record",
+  "canonical_fps": 25.0,
+  "window_size": 64,
+  "stride": 8,
+  "fall_head": "G2_CONCAT",
+  "g2_fall_class": 1,
+  "recovery": {
+    "state_head": "S0_G0_DENSE_POSTERIOR",
+    "background_endpoints_to_close": 3,
+    "timeout_seconds": 25.0,
+    "recovered_display_seconds": 2.0
+  },
+  "fall_alert_mode_default": "D0_LEGACY",
+  "recommended_fixed_mode": "D1_DECOUPLED",
+  "weights_available": false,
+  "note": "Original hashes and checkpoint bytes were not present in the recovery archive."
+}

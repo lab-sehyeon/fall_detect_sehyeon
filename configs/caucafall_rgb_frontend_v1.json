@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "detector": "yolov8x",
+  "person_class": 0,
+  "association": {"iou_weight": 0.7, "confidence_weight": 0.3},
+  "single_person_dominant_track": true,
+  "model_assets_available": false
+}

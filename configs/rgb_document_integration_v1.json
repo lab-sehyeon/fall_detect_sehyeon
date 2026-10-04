@@ -1,0 +1,23 @@
+{
+  "experiment_id": "RGB_DOCUMENT_INTEGRATION_20260928_R1",
+  "historical_exact_reproduction": false,
+  "output": "data/fall_processed/RGB/document_integration_20260928_r1",
+  "asset_root": "checkpoint/rgb_frontend_20260928_r1",
+  "alignment": "data/source_archives/rgb_alignment_20260928_r1/oops_records.json",
+  "alignment_sha256": "e14849ac4498d7579d0bd5da8054f2559550588804b66d775a5bac50e949f85b",
+  "video_root": "data/source_archives/OmniFall/oops_original_818_20260923",
+  "plan": "lexicographically first3 names; no label or prediction selection",
+  "sample_count": 3,
+  "sampling": "existing actualPTS past-only25fps; different from historical nearest-frame",
+  "detector": {"base_conf":0.25,"base_imgsz":640,"fallback_conf":0.05,"fallback_imgsz":960,"iou":0.7,"class_id":0,"max_det":300,"tracker_iou":0.7,"tracker_conf":0.3,"missing":"zero invalid; previous last valid box retained; no interpolation or predicted box","tie":"first candidate"},
+  "pose_config": "third_party/ViTPose/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/ViTPose_base_coco_256x192.py",
+  "vitpose_commit": "c050ed29112da7704797cc1a65af0234b525010d",
+  "pose_inference": "official mmpose BGR pipeline, UDP, configured flip TTA; keypoints XY original image; strict COCO17 checkpoint",
+  "quality": {"bbox_coverage_min":0.8,"pose_coverage_min":0.8,"pelvis_median_min":0.3,"pose_valid":"all XY/score finite and any positive confidence; median pelvis=min(hip11,hip12) over all frames including invalid zeros"},
+  "lifting_source_config": "configs/safer_v2_document_reconstruction_v1.json",
+  "lifting": {"window":243,"stride":121,"weight":"triangular","edge_floor":0.05,"flip_tta":true,"batch":4,"offline":true},
+  "inference": {"global_config":"configs/global_motion_document_reconstruction_v1.json","global_config_sha256":"98bc49a215b08e849117cc220073fe898e3ff57db65cea6e3ae2cf0e81f89e60","global_report_sha256":"14e6ab40368dacf56c95382644c8e65e93ece35a81d2e268f91fa8789b76dcaf","window":64,"stride":8,"append_tail":false,"batch":32,"cpu_head_atol":0.0001,"cpu_head_rtol":0.00001,"classes":["other","fall","lie_down","lying_down"],"training":false,"threshold_fitting":false,"G2_deployment_selected":false},
+  "execution": {"gpu":"0","threads":2,"seed":0,"reserve_gib":64,"minimum_gpu_free_gib":8,"gpu_memory_fraction":0.6,"max_added_gib":3,"pause":"PAUSE_REQUESTED at safe frame/batch boundaries"},
+  "newly_specified": ["official-linked distribution pin for lost ViTPose weights","exact missing track/tie/quality aggregation policy","current reconstructed global131/scaler/J1 lineage","past-only timestamps and no appended64frame tail","fixed OOPS first3 engineering smoke instead of unavailable historical GMDCSA pair","single physicalGPU0"],
+  "scope": "offline engineering smoke only, no event ground truth/recovery/S0/external performance evaluation"
+}

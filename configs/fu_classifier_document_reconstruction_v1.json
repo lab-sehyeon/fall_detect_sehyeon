@@ -1,0 +1,25 @@
+{
+  "experiment_id":"FU_CLASSIFIER_DOCUMENT_RECONSTRUCTION_20260922_R1",
+  "historical_source":"fall_project_complete_record_2026-08-23_v4.md section32",
+  "historical_exact_reproduction":false,
+  "source_config":"configs/joint_document_reconstruction_v1.json",
+  "source_config_sha256":"61b5be449ba13e5aa088f618dd4556ee596c8727fc0327a5c9fcb22c8ea9bf35",
+  "features":"same frozen native30 DSTE TS2048 FU993 clip cache as reconstructed J0/J1",
+  "split":"outer k evaluation, inner(k+1)%5 selection, other3 folds train; no inner refit",
+  "scaler":"StandardScaler fit on training clips only, reused unchanged for inner/outer; all classifiers",
+  "seed":0,
+  "grids":{
+    "logistic":{"C":[0.01,0.1,1.0,10.0],"class_weight":["balanced"],"solver":["lbfgs"],"max_iter":[2000],"tol":[0.00001]},
+    "linear_svm":{"C":[0.01,0.1,1.0,10.0],"class_weight":["balanced"],"dual":[true],"max_iter":[20000],"tol":[0.00001]},
+    "rbf_svm":{"C":[0.1,1.0,10.0],"gamma":["scale",0.001,0.01],"class_weight":["balanced"],"kernel":["rbf"],"probability":[false],"tol":[0.001]},
+    "random_forest":{"n_estimators":[300],"max_depth":[null,10],"min_samples_leaf":[1,2,4],"class_weight":["balanced_subsample"],"max_features":["sqrt"],"n_jobs":[1]}
+  },
+  "selection":"inner F1 then inner average precision then first ParameterGrid order; default predict threshold, no outer calibration",
+  "score":"positive decision_function for logistic/SVM; positive predict_proba for random forest; no probability fitting on outer",
+  "audit":"reload own hash-verified checkpoint, replay saved inner/outer predictions; refit every selected candidate deterministically and compare, OOF993exact-once",
+  "reference":"only after all classifier predictions locked, exact replay new V3 joint nested J0/J1 OOF; no classifier reselection",
+  "reference_root":"checkpoint/fall/JOINT_V3_DOCUMENT_RECONSTRUCTION_20260922_R2/v3",
+  "execution":{"cpu_threads":2,"reserve_gib":64,"output_budget_gib":2,"gpu":false,"n_jobs":1},
+  "newly_specified_not_recovered":["all hyperparameter grids and estimator defaults made explicit", "train-only scaler, weighting for SVM/RF, seed and selection tie order", "new reconstructed FU feature lineage; default thresholds retained"],
+  "output_dir":"checkpoint/fall/FU_CLASSIFIER_DOCUMENT_RECONSTRUCTION_20260922_R1"
+}

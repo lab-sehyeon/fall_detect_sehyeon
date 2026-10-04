@@ -1,0 +1,63 @@
+{
+  "experiment_id": "SHARED_UNSEEN_EXTERNAL_20261003_R1",
+  "scopes": [
+    "le2i38",
+    "gmdcsa37",
+    "cauca19"
+  ],
+  "output": "data/fall_processed/RGB/shared_unseen_external_20261003_r1",
+  "videos": 94,
+  "windows": 2765,
+  "fps": 25,
+  "window": 64,
+  "stride": 8,
+  "append_tail": false,
+  "input": "unchanged exact-PTS canonical frontend, shared YOLOv8x and ViTPose COCO17",
+  "own_model": "DSTE/J1/G0; hash-verified existing predictions and existing quality rejections",
+  "comparator": "author PySKL PoseC3D SlowOnly-R50 NTU60 xsub joint",
+  "upstream_revision": "f2bf3a6b08e2e8dec744692d64efdb187fd6719a",
+  "weight_sha256": "3f7aca61bb706b9ff8ef4fad19caa5e5200179d588ad18711deddcc4f5a6d835",
+  "source_training": {
+    "own": [
+      "NTU60",
+      "SAFER-Activities",
+      "FU-Kinect-Fall"
+    ],
+    "posec3d": [
+      "NTU60 xsub"
+    ]
+  },
+  "posec3d_test": "unmodified official test pipeline: Uniform48 x10, seed255, compact,64x64,sigma0.6,confidence,flip,mean20softmax",
+  "posec3d_fall_index": 42,
+  "own_fall_index": 1,
+  "decision": "original multiclass argmax mapped to binary",
+  "inference": {
+    "max_testing_views": 4,
+    "dtype": "float32",
+    "amp": false
+  },
+  "quality": "own original gate; PoseC3D no 3D gate, zero-score missing poses retained; all failures counted",
+  "evaluation": {
+    "event": "rising edge at window endpoint; early0.5/late3; one-to-one; refractory0",
+    "video": "any fall argmax window; max fall score for AP",
+    "primary": "event F1",
+    "paired_bootstrap": "10000 video draws per dataset, seed20261003; exploratory 95% percentile CI"
+  },
+  "execution": {
+    "gpu": "0",
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.6,
+    "reserve_gib": 64
+  },
+  "target_training": false,
+  "target_tuning": false,
+  "untouched_target": false,
+  "official_ntu_reproduction": false,
+  "limitations": [
+    "different source training and label spaces",
+    "shared ViTPose replaces comparator training HRNet input",
+    "fixed64 sliding windows replace whole-action clips",
+    "offline own lifting and normalization",
+    "existing target diagnostic exposure; 2/1/2 held-out subjects, clustered-video bootstrap is descriptive"
+  ]
+}

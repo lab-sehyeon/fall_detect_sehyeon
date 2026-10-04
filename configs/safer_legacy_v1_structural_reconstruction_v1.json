@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "experiment": "SAFER legacy clean3d_v1 structural compatibility reconstruction",
+  "status": "approved_for_materialization",
+  "candidate_name": "legacy_coco_umurl_window_noscale",
+  "candidate_contract": {
+    "name": "legacy_coco_umurl_window_noscale",
+    "mapping": "coco_midpoint_proxy",
+    "alignment": "umurl_full_3d",
+    "alignment_scope": "window_first_frame",
+    "scale": "none"
+  },
+  "historical_contract": {
+    "window_size": 64,
+    "stride": 8,
+    "append_tail_window": false,
+    "reject_window_if_any_legacy_3d_frame_nonfinite": true,
+    "global_interpolation": false,
+    "second_person_zero_fill": true,
+    "center_label_offset": 32,
+    "derived_four_class": {
+      "0": "other",
+      "1": "fall",
+      "2": "lie_down",
+      "3": "lying_down"
+    },
+    "coarse_to_derived": {
+      "10": 1,
+      "11": 2,
+      "12": 3,
+      "other": 0
+    },
+    "expected_clean_windows": {
+      "train": 599986,
+      "val": 104589,
+      "test": 216768,
+      "ood": 71964
+    }
+  },
+  "selection_basis": {
+    "kind": "record_grounded_structural_reconstruction",
+    "metric_fingerprint_selection_passed": false,
+    "reason": "The original project mapper, exact historical head weights, and exact metric implementation were lost. This candidate follows the preserved COCO-topology-error record and the official UmURL centering and shoulder-alignment contract without post-hoc validation tuning."
+  },
+  "recovery_limits": {
+    "original_safer_gendata_source_recovered": false,
+    "original_map_coco17_to_ntu25_source_recovered": false,
+    "historical_weight_byte_identity_proved": false,
+    "must_not_be_called_byte_identical_reproduction": true,
+    "experimental_compatibility_reconstruction": true
+  },
+  "evidence": {
+    "preserved_project_record": "../temp/fall_project_complete_record_2026-08-23_v4.md sections 3.7-3.9",
+    "official_umurl_commit": "744278b8ad6ba3fc2290cd2469c4bf315c571935",
+    "official_safer_repository": "https://github.com/safer-activities/Safer-Activities",
+    "count_preflight": "data/fall_processed/SAFER-Activities/clean3d_v1_preflight/preflight_report.json",
+    "epoch150_candidate_report": "checkpoint/fall/SAFER_LEGACY_V1_CANDIDATE_FULLVAL_EPOCH150_20260904_R1/candidate_report.json"
+  }
+}

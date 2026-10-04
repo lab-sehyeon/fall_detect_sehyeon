@@ -1,0 +1,22 @@
+{
+  "experiment_id": "S0F_DOCUMENT_RECONSTRUCTION_20260930_R1",
+  "output": "checkpoint/fall/S0F_DOCUMENT_RECONSTRUCTION_20260930_R1",
+  "historical_exact_reproduction": false,
+  "s0a_config": "configs/s0a_document_reconstruction_v1.json",
+  "s0a_config_sha256": "70cd68ea467073ee1fbad19ff30f01af45b543798e1f65e9f96475561bed8355",
+  "s0a_root": "checkpoint/fall/S0A_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "s0a_report_sha256": "bef53439a116736685d7baf914214c55deefa0e82a1895a847778f0f46e56177",
+  "s0a_selection_sha256": "e407cf1cf42230b58a3409ab9e5d213086845e323dbbdf7c203404dc60fd7bdf",
+  "s0a_checkpoint_sha256": "292790216a47ee66fe8e6db326bc2bbc4a606e110499c663e7bce2df6b7fd07d",
+  "s0c_config": "configs/s0c_document_reconstruction_v3.json",
+  "s0c_root": "checkpoint/fall/S0C_DOCUMENT_RECONSTRUCTION_20260929_R3",
+  "s0c_report_sha256": "f2c760b29e12fd2da89b3d499f2474af8eda89f18a387b075ccd5f4a85497767",
+  "historical_source": "fall_project_complete_record_2026-08-23_v4.md lines4427-4498; project-specific auxiliary head, not a paper baseline",
+  "input": {"dimensions": 35, "fps": 25, "window": 64, "stride": 8, "extraction_batch": 128, "difference": "p(t)-p(t-1), zero at sequence start", "fusion": "S0-A float64 overlap mean then float32; not end-to-end causal"},
+  "targets": {"pairs": [[10,12],[6,4],[12,7]], "positive_width": 5, "alignment": "centered on successor onset; nearest boundary wins; earlier boundary then class ID break ties"},
+  "model": {"hidden": 64, "dilations": [1,2,4], "kernel": 3, "dropout": 0.1, "classes": 4, "initialization": "Xavier uniform Conv weights, zero biases", "block": "left-pad -> dilated Conv3 -> ReLU -> Conv1 -> dropout -> residual"},
+  "training": {"epochs": 12, "seed": 0, "batch_size": 512, "lr": 0.001, "betas": [0.9,0.999], "eps": 1e-8, "weight_decay": 0.0001, "gradient_clip": 1.0, "caps": [20,50], "optimizer": "AdamW", "schedule": "constant", "loss": "weighted CE sum divided by sum of frame weights", "weights": "none=1; positive=min(cap,sqrt(unique covered none frames / positive frames))", "sampler": "epoch draws=train window count; shuffled cyclic 4 groups, replacement within each group; seed+epoch", "amp": false, "tf32": false},
+  "evaluation": {"chunk_frames": 4096, "matching_tolerance_frames": 12, "event_decode": "first frame of each nonzero argmax run", "matching": "chronological GT to earliest unused prediction in tolerance; per class per sequence", "selection": ["worst_view_macro_f1","macro_f1"], "ties": "earlier epoch then cap20", "macro_f1_min": 0.4, "worst_view_macro_f1_min": 0.2, "each_recall_min": 0.4, "false_events_per_minute_max": 6.0, "missing_class_view": "zero F1 retained in three-class macro", "ranking": "validation AP after selection; no threshold tuning"},
+  "execution": {"reserve_gib": 64, "estimated_output_gib": 0.11, "minimum_gpu_free_gib": 12, "gpu_memory_fraction": 0.85, "minimum_ram_available_gib": 32, "ram_feature_budget_gib": 4, "checkpoint_batches": 64, "smoke_windows_per_group": 8, "pause_file": "PAUSE_REQUESTED"},
+  "newly_specified": ["TCN dimensions/dropout/initialization", "epochs/optimizer/batch/seed", "target alignment and collision rule", "balanced draw schedule and weights formula", "event matching/ties and missing-view class handling", "fixed chunk evaluation and RAM-only cache"]
+}

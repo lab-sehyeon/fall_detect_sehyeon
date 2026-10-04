@@ -1,0 +1,67 @@
+{
+  "experiment_id": "SAFER_V2_DOCUMENT_RECONSTRUCTION_20260920_R1",
+  "historical_exact_reproduction": false,
+  "configuration_kind": "user_approved_document_grounded_reconstruction",
+  "historical_source": "fall_project_complete_record_2026-08-23_v4.md sections 3.18-3.21 and 3.45",
+  "source": {
+    "normal": "data/source_archives/SAFER-Activities/pose_bboxes/extracted/3d_keypoints_pickle_ntu_format/aic_normal_dataset_with_3d.pkl",
+    "ood": "data/source_archives/SAFER-Activities/pose_bboxes/extracted/3d_keypoints_pickle_ntu_format/aic_normal_test_set_with_split_3d.pkl",
+    "normal_sha256": "c65e1620f559ff39e0d67349b9f0c798a28d35df381f97dbc2cc65509787dcb7",
+    "ood_sha256": "96660c4fafd6665df32e5e121cdd1e657b38814bb1ce7066a9eeb376409271f7",
+    "safer_official_commit": "994ed688ce9e491245ee96c1665e948c6ce6c74d",
+    "safer_official_code": "https://github.com/safer-activities/Safer-Activities/blob/994ed688ce9e491245ee96c1665e948c6ce6c74d/preprocessing/3d_pose_lifting/batch_3d_pose_processor.py",
+    "legacy_3d": "present in serialized container but discarded after restricted loading; never used as model input or quality filter",
+    "labels": "official coarse labels copied only; no classifier or performance-based preprocessing selection"
+  },
+  "model": {
+    "upstream": "third_party/MotionAGFormer",
+    "commit": "4756fd1eb7cc73f0e991f091ff2280e030ab85f3",
+    "yaml": "configs/h36m/MotionAGFormer-base.yaml",
+    "yaml_sha256": "a1a19c3b2a42399cc3f980c15e646f17a7b9bf99b1ff661f012d720a63adf503",
+    "checkpoint": "checkpoint/motionagformer/motionagformer-b-h36m.pth.tr",
+    "checkpoint_sha256": "eb15d088aadf193524a0d6c4a40680a324292db2781f3f45abe3400d5a4b343b",
+    "checkpoint_bytes": 141930389,
+    "frozen": true,
+    "batch_size": 4,
+    "flip_tta": true,
+    "root": "overwrite predicted H36M joint0 with exact zero after flip mean, as official root-relative inference",
+    "camera_to_world": false
+  },
+  "lifting": {
+    "window": 243, "stride": 243, "end_anchor": true,
+    "short_padding": "repeat last pose, keep only real-frame output",
+    "overlap": "uniform arithmetic mean, float64 accumulation then float32",
+    "coco_xy_to_h36m": "SAFER official coco_to_h36m direct limbs and midpoint pelvis/shoulders/spine/eyes",
+    "confidence": "replace only nonfinite scores with zero; preserve COCO score order to match official SAFER batch input, even though XY is reordered; do not silently fix this legacy confidence-index limitation",
+    "screen": "float32 H36M XY / image width * 2 - [1,height/width]; confidence unchanged",
+    "invalid_windows": "no confidence threshold, no zero-window exclusion; preserve all finite 2D frames, unlike legacy batch confidence gating",
+    "expected_sequences": 497, "expected_frames": 8091357,
+    "expected_confidence_repairs": {"sequences": 193, "frames": 525, "values": 8925}
+  },
+  "ntu_proxy": {
+    "mapping": [0,7,9,10,11,12,13,13,14,15,16,16,4,5,6,6,1,2,3,3,8,13,13,16,16],
+    "reference_torso": 0.5,
+    "scale": "sequence median positive length joint20-joint0; epsilon1e-8; all-degenerate scale1 and flag, do not remove",
+    "center": "frame-wise NTU joint1 SpineMid",
+    "rotation": "sequence first shoulder with XZ norm>1e-8, yaw atan2(z,x), active Ry(+yaw) applied to column vectors so XZ shoulder maps to +X; no Y flip or gravity alignment",
+    "root_trajectory": "scaled, rotated SpineMid before centering; body-relative diagnostic, NOT physical world translation"
+  },
+  "materialization": {
+    "window": 64, "stride": 8, "append_tail": false, "second_person": "exact zero", "center_label_offset": 32,
+    "validation_subjects": [2,12,24,25,34,35],
+    "split_membership": "official sub_train/sub_test, same validation subjects and annotation order as reconstructed V1; OOD official sub_test",
+    "expected_windows": {"train": 609183, "val": 106680, "test": 219896, "ood": 71964},
+    "derived_labels": "coarse10->fall1,11->lie_down2,12->lying_down3,all other->0",
+    "lying_origin": "only coarse12 bouts: immediately preceding coarse10=>0 fall-origin, coarse11=>1 intentional-origin, otherwise -1 unknown; -1 outside bouts; no smoothing or gap filling",
+    "sample_name": "normalized source name + __f + zero-padded seven-digit start"
+  },
+  "execution": {
+    "physical_gpu": "0", "cpu_threads": 2, "seed": 0, "amp": false, "tf32": false,
+    "deterministic_algorithms": true, "cublas_workspace_config": ":4096:8", "gpu_memory_fraction": 0.35,
+    "reserve_gib": 64, "minimum_gpu_free_gib": 8,
+    "resume": "identical code/config; completed sequence for lifting, flushed completed sequence for materialization",
+    "full_output_gib_upper_bound": 50
+  },
+  "newly_specified_not_recovered": ["precise official COCO2D conversion and confidence-order policy", "absence of confidence-based filtering", "normalization scope/yaw sign/reference_torso0.5", "lying-origin label definition and root trajectory meaning", "float64 overlap arithmetic and deterministic runtime", "single physical GPU0 instead of historical GPU0/1"],
+  "output_dir": "data/fall_processed/SAFER-Activities/v2_document_reconstruction_20260920_r1"
+}

@@ -1,0 +1,94 @@
+name: Branch policy
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  branch-and-title:
+    name: Branch and PR title
+    runs-on: ubuntu-latest
+    env:
+      BASE_BRANCH: ${{ github.base_ref }}
+      HEAD_BRANCH: ${{ github.head_ref }}
+      PR_TITLE: ${{ github.event.pull_request.title }}
+    steps:
+      - name: Validate branch direction and PR title
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "$BASE_BRANCH" == "main" ]]; then
+            if [[ "$HEAD_BRANCH" != "develop" ]]; then
+              echo "Only develop may open a PR into main."
+              exit 1
+            fi
+            case "$PR_TITLE" in
+              "🚀 Release: "*|":rocket: Release: "*) ;;
+              *)
+                echo "Release PR title must start with '🚀 Release: ' or ':rocket: Release: '."
+                exit 1
+                ;;
+            esac
+            exit 0
+          fi
+
+          if [[ "$BASE_BRANCH" != "develop" ]]; then
+            echo "Unsupported base branch: $BASE_BRANCH"
+            exit 1
+          fi
+
+          if [[ ! "$HEAD_BRANCH" =~ ^(feature|fix|refactor|design|test|docs)/#[0-9]+$ ]]; then
+            echo "Work branch must be type/#<issue-number>."
+            exit 1
+          fi
+
+          case "$HEAD_BRANCH" in
+            feature/*) expected_emoji="✨ Feature: "; expected_code=":sparkles: Feature: " ;;
+            fix/*) expected_emoji="🔥 Fix: "; expected_code=":fire: Fix: " ;;
+            refactor/*) expected_emoji="♻️ Refactoring: "; expected_code=":recycle: Refactoring: " ;;
+            design/*) expected_emoji="🎨 Design: "; expected_code=":art: Design: " ;;
+            test/*) expected_emoji="✅ Test: "; expected_code=":white_check_mark: Test: " ;;
+            docs/*) expected_emoji="📘 Docs: "; expected_code=":blue_book: Docs: " ;;
+          esac
+
+          if [[ "$PR_TITLE" != "$expected_emoji"* && "$PR_TITLE" != "$expected_code"* ]]; then
+            echo "PR title must start with '$expected_emoji' or '$expected_code'."
+            exit 1
+          fi
+
+  commit-convention:
+    name: Commit convention
+    if: github.base_ref == 'develop'
+    runs-on: ubuntu-latest
+    env:
+      BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Check out PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Validate commit subjects
+        shell: bash
+        run: |
+          set -euo pipefail
+          invalid=0
+
+          while IFS= read -r subject; do
+            if [[ "$subject" =~ ^(Merge|Revert)[[:space:]] ]] ||
+               [[ "$subject" =~ ^(fixup!|squash!)[[:space:]] ]] ||
+               [[ "$subject" =~ ^(Feat|Fix|Docs|Refactor|Design|Test):[[:space:]].+ ]]; then
+              continue
+            fi
+            echo "Invalid commit subject: $subject"
+            invalid=1
+          done < <(git log "$BASE_SHA..$HEAD_SHA" --format=%s)
+
+          exit "$invalid"

@@ -1,0 +1,51 @@
+{
+  "experiment_id": "JOINT_DOCUMENT_RECONSTRUCTION_20260922_R1",
+  "historical_exact_reproduction": false,
+  "historical_source": "fall_project_complete_record_2026-08-23_v4.md sections 3.12-3.14 and 3.23-3.29, especially explicit CLI 3.25",
+  "lineages": {
+    "v1": {
+      "data_root": "data/fall_processed/SAFER-Activities/clean3d_v1_reconstructed",
+      "development_cache": "checkpoint/fall/F0B_SAFER_V1_RECONSTRUCTED_20260904_R1/feature_cache",
+      "cache_manifest_sha256": "15df6f0879d73e70da9b65c4144771fb5848eac06a2e8615ec7cc2419cab3b49",
+      "holdout_cache": "checkpoint/fall/F0B_SAFER_V1_RECOVERY_SGD_POSTSELECTION_20260904_R1",
+      "holdout_report_sha256": "9831e4b0ba37d00a7840cc84632c82b91e24b97fd646cf03fe000cc96e128f2f",
+      "split_counts": {"train":599986,"val":104589,"test":216768,"ood":71964}
+    },
+    "v2": {
+      "data_root": "data/fall_processed/SAFER-Activities/v2_document_reconstruction_20260920_r1/materialized",
+      "controls_root": "checkpoint/fall/F0_CONTROLS_SAFER_V2_DOCUMENT_RECONSTRUCTION_20260922_R1",
+      "controls_config_sha256": "dd8d48544045d537e39e2254100ede100615a77af45e9daa4b86abcc4e982296",
+      "split_counts": {"train":609183,"val":106680,"test":219896,"ood":71964}
+    }
+  },
+  "fu": {
+    "root": "data/fall_processed/FU-Kinect-Fall/ntu25_official_umurl_v1",
+    "manifest_sha256": "cc336634704a907a24555b660ebc67a7e8c5454cf8de3c2be56f4c25947ea70e",
+    "features": "checkpoint/fall/FU_PROBE_DOCUMENT_RECONSTRUCTION_20260920_R1/zs1_native30/features.npz",
+    "features_sha256": "dcc4f272a081e589c2ed5b64583086912cde6c7b6ec1941a742035e7345cf148",
+    "probe_report": "checkpoint/fall/FU_PROBE_DOCUMENT_RECONSTRUCTION_20260920_R1/final_report.json",
+    "probe_report_sha256": "806bd977e3de82b5a0091339ea8610f626f2cb300b1d9e938092316b89c746b7",
+    "clip_feature": "cached native30 temporal max/spatial max per window then equal-window mean; concatenate t,s",
+    "fold": "(subject-1)%5",
+    "count":993
+  },
+  "model": {"feature_dim":2048,"bottleneck":256,"dropout":0.1,"adapter":"LayerNorm -> Linear -> GELU -> Dropout -> zero-init Linear -> residual add", "j0":"Identity adapter, separate SAFER4/FU2 heads", "head_initialization":"normal mean0 std0.01, bias0", "j1_initialization":"new adapter seed0; copy selected J0 heads; no DSTE/ADL loaded or optimized", "feature_scaler":"none"},
+  "training": {
+    "seed":0,"j0_epochs":30,"j1_epochs":20,"safer_batch_size":8192,"fu_batch_size":32,
+    "eval_batch_size":4096,"optimizer":"AdamW","betas":[0.9,0.999],"eps":1e-8,"weight_decay":0.0001,
+    "j0_lr":0.001,"j0_schedule":[20,25],"adapter_lr":0.0001,"head_lr":0.00005,"j1_schedule":[12,16],"gamma":0.1,
+    "loss":"sum of SAFER and FU CE; each has train-only inverse-sqrt class counts normalized by mean; absent count clamped1",
+    "sampling":"one pass shuffled SAFER per epoch; each step one FU32 batch, cycle independent shuffled train-only FU indices without dropping samples",
+    "shuffle":"CPU generator seed+2*epoch for SAFER and seed+2*epoch+1 for FU; epoch starts at1",
+    "selection":"mean(SAFER validation macroF1,FU designated validation F1), then FU AP, then SAFER conditional AP; exact ties earliest epoch",
+    "j1_epoch0_eligible":true
+  },
+  "development":{"folds":5,"fu_train":"all except fold k","fu_validation":"fold k","claim":"development validation OOF, not nested performance"},
+  "locked_safer":{"after":"all five J0/J1 checkpoint pairs locked", "splits":["test","ood"],"ensemble":"mean raw logits over five folds before softmax/argmax","selection":false},
+  "nested":{"outer":"k","inner":"(k+1)%5","train":"remaining three folds","outer_access":"only after fold J0/J1 selection locked", "retrain_with_inner_after_selection":false, "claim":"post-design nested control, not pristine external test"},
+  "final":{"epochs":"integer median of five new nested inner-selected epochs separately for J0 and J1, not historical constant", "safer":"train only", "fu":"all993", "checkpoint_selection":false, "evaluation":"training diagnostic only, never generalization evidence", "zero_median_j1":"retain copied J0 with zero correction"},
+  "execution":{"physical_gpu":"0","cpu_threads":2,"gpu_memory_fraction":0.65,"minimum_gpu_free_gib":16,"reserve_gib":64,"output_budget_gib_each":6,"amp":false,"tf32":false,"deterministic":true,"pause":"completed epoch/fold boundary"},
+  "audit":{"cpu_prediction_atol":0.0001,"cpu_prediction_rtol":0.00001,"all_best_predictions":true,"all_epoch_saved_metric_recomputation":true,"outer_oof_exact_once":true},
+  "newly_specified_not_recovered":["V1/V2 feature lineage and FU pooling", "AdamW type/betas/eps/gamma and train-only CE weights", "LayerNorm/GELU placement and initialization details", "development uses same 30/20 schedule as documented nested CLI", "combined selection key and RNG sequence", "locked raw-logit ensemble rule", "GPU0 only and evaluation batch4096 instead of historical nested32768", "new nested median not historical epoch constants"],
+  "output_dir":"checkpoint/fall/JOINT_DOCUMENT_RECONSTRUCTION_20260922_R1"
+}

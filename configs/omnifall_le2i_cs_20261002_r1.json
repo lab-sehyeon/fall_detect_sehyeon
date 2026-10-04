@@ -1,0 +1,115 @@
+{
+  "experiment_id": "OMNIFALL_LE2I_CS_20261002_R1",
+  "historical_exact_reproduction": false,
+  "output": "data/fall_processed/RGB/omnifall_le2i_cs_20261002_r1",
+  "asset_root": "checkpoint/rgb_frontend_20260928_r1",
+  "alignment": "data/fall_processed/RGB/omnifall_le2i_cs_20261002_r1/plan.json",
+  "alignment_sha256": "31054573d26db791a5658861b6d5188fee2175509b747eb3409ef129745c2705",
+  "video_root": "data/source_archives/OmniFall/le2i_cs_20261002_r1/video",
+  "plan": "all official le2i-cs test segments in official parquet order; no prediction selection",
+  "sample_count": 203,
+  "sampling": "official companion0.2.0 uniform64 nearestPTS with inclusive endpoints; NOT physical25fps",
+  "detector": {
+    "base_conf": 0.25,
+    "base_imgsz": 640,
+    "fallback_conf": 0.05,
+    "fallback_imgsz": 960,
+    "iou": 0.7,
+    "class_id": 0,
+    "max_det": 300,
+    "tracker_iou": 0.7,
+    "tracker_conf": 0.3,
+    "missing": "zero invalid; previous last valid box retained; no interpolation or predicted box",
+    "tie": "first candidate"
+  },
+  "pose_config": "third_party/ViTPose/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/ViTPose_base_coco_256x192.py",
+  "vitpose_commit": "c050ed29112da7704797cc1a65af0234b525010d",
+  "pose_inference": "official mmpose BGR pipeline, UDP, configured flip TTA; keypoints XY original image; strict COCO17 checkpoint",
+  "quality": {
+    "bbox_coverage_min": 0.8,
+    "pose_coverage_min": 0.8,
+    "pelvis_median_min": 0.3,
+    "pose_valid": "all XY/score finite and any positive confidence; median pelvis=min(hip11,hip12) over all frames including invalid zeros"
+  },
+  "lifting_source_config": "configs/safer_v2_document_reconstruction_v1.json",
+  "lifting": {
+    "window": 243,
+    "stride": 121,
+    "weight": "triangular",
+    "edge_floor": 0.05,
+    "flip_tta": true,
+    "batch": 4,
+    "offline": true
+  },
+  "inference": {
+    "global_config": "configs/global_motion_document_reconstruction_v1.json",
+    "global_config_sha256": "98bc49a215b08e849117cc220073fe898e3ff57db65cea6e3ae2cf0e81f89e60",
+    "global_report_sha256": "14e6ab40368dacf56c95382644c8e65e93ece35a81d2e268f91fa8789b76dcaf",
+    "window": 64,
+    "stride": 8,
+    "append_tail": false,
+    "batch": 32,
+    "cpu_head_atol": 0.0001,
+    "cpu_head_rtol": 1e-05,
+    "classes": [
+      "other",
+      "fall",
+      "lie_down",
+      "lying_down"
+    ],
+    "training": false,
+    "threshold_fitting": false,
+    "G2_deployment_selected": false
+  },
+  "execution": {
+    "gpu": "0",
+    "threads": 2,
+    "seed": 0,
+    "reserve_gib": 64,
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.6,
+    "max_added_gib": 4,
+    "pause": "PAUSE_REQUESTED at safe frame/batch boundaries"
+  },
+  "newly_specified": [
+    "Le2i official CS203 GT segments rather than old127 full-video events",
+    "author Le2i conversion recipe, pinned FFmpeg build, two CPU threads",
+    "G0 only, identical predeclared GMDCSA segment adapter; no target tuning",
+    "explicit physical25fps mismatch excludes G1/G2 motion features from scoring"
+  ],
+  "scope": "official ground-truth segment Fall-vs-rest classification; current frozen J1+separate G0; no event/recovery/16class claim",
+  "benchmark": {
+    "hf_revision": "83572a37b9e3081df8c06a56874b1d1f2a19386c",
+    "config": "le2i-cs",
+    "split": "test",
+    "videos": 38,
+    "segments": 203,
+    "positive": 22,
+    "negative": 181,
+    "subject": [
+      2,
+      7
+    ],
+    "gt_positive_class": 1,
+    "sampling": "official omnifall0.2.0 uniform RGB64; inclusive endpoints; nearest presentation timestamp; official repeat-last at EOF",
+    "sampling_is_physical_25fps": false,
+    "target_fps_argument": 25,
+    "target_fps_ignored_by_uniform": true,
+    "no_video_context_outside_official_sampler": true,
+    "reset_track_per_segment": true,
+    "primary_head": "G0 selected before target predictions; separately source-trained after final J1 adapter",
+    "decision": "one G0 4-class argmax per 64-sample segment; class1 positive; others negative",
+    "quality_fail": "negative/no alarm; retain denominator and report failed positive/negative counts",
+    "labels_only_used_in_scoring": true,
+    "target_training": false,
+    "target_calibration": false,
+    "pretrained_overlap_claim": "no task-specific Le2i training; previously examined engineering target, not untouched; pretraining exclusion unproven",
+    "global_motion_features_used_for_primary": false,
+    "comparison": "same GT test segments and binary metrics; different training data/input representation/sampling, not exact paper reproduction",
+    "excluded_heads": [
+      "G1",
+      "G2"
+    ],
+    "excluded_heads_reason": "global131 assumes physical25fps but uniform segment sampler warps time"
+  }
+}

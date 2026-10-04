@@ -1,0 +1,56 @@
+{
+  "experiment": "HFD_OFFICIAL_CODE_REPRODUCTION_20261004_R1",
+  "author_commit": "b74c13524979302641c1e55fc8582939daa58800",
+  "provenance": "Official code reproduction; newly fitted SVM, not author final checkpoint",
+  "source": "GMDCSA original 32 / GMDCSA24 Subject 1 only",
+  "source_order": "Exact video order embedded in author extraction stdout; feature CSV read order historically unrecorded",
+  "source_fps": "Published files average rates 29.23..29.78; notebook prints30. FPS is not used in feature extraction: no resampling",
+  "input": {
+    "color": "OpenCV BGR",
+    "resize": [
+      112,
+      112
+    ],
+    "resize_interpolation": "cv2.INTER_LINEAR",
+    "dtype": "float32",
+    "range": [
+      0,
+      255
+    ],
+    "normalization": "none",
+    "clip": 16,
+    "stride": 16,
+    "tail": "discard fewer than16 frames",
+    "feature": "fc6 4096"
+  },
+  "svm": {
+    "kernel": "linear",
+    "C": 1,
+    "probability": true
+  },
+  "numpy_seed": 33,
+  "validation": {
+    "type": "StratifiedShuffleSplit",
+    "n_splits": 5,
+    "train_size": 0.7,
+    "random_state": 33,
+    "unit": "chunk; video overlap allowed by official code"
+  },
+  "final_export": "After reporting all5 source folds, refit fixed SVC on all360 source chunks; export newly fitted classifier. This all-source export is an external-test extension, not present in original notebook.",
+  "inference": {
+    "decision": "SVC.predict; margin threshold0; no probability threshold tuning",
+    "event": "positive-chunk rising edges, time of last actual frame of the positive chunk; initial previous class0",
+    "video": "any positive chunk",
+    "decoder": "OpenCV native sequential frames, pixel hashes checked against frozen common traces",
+    "failure": "retain video in denominator with no alarm"
+  },
+  "metric": {
+    "early": 0.5,
+    "late": 3.0,
+    "matching": "existing ordered greedy one-to-one common evaluator"
+  },
+  "target_training": false,
+  "target_adaptation": false,
+  "target_threshold_tuning": false,
+  "source_reference": "paper F1 98.08%; notebook stored F1 99.1443%; not guaranteed bit-exact historical reproduction"
+}

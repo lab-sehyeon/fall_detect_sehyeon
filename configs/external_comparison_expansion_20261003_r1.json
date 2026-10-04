@@ -1,0 +1,170 @@
+{
+  "experiment_id": "EXTERNAL_COMPARISON_EXPANSION_20261003_R1",
+  "historical_exact_reproduction": false,
+  "output": "data/fall_processed/RGB/external_comparison_expansion_20261003_r1",
+  "asset_root": "checkpoint/rgb_frontend_20260928_r1",
+  "alignment": "data/fall_processed/RGB/external_comparison_expansion_20261003_r1/plan.json",
+  "alignment_sha256": "a6139459c3befe924114cc26e920350e064b2b58cb910b1b7aed66a26f8a28af",
+  "video_root": "data/source_archives",
+  "plan": "199 unique videos; main three official CS scopes, supplementary Le2i127",
+  "sample_count": 199,
+  "sampling": "exact rational PTS latest past frame on physical25Hz grid",
+  "detector": {
+    "base_conf": 0.25,
+    "base_imgsz": 640,
+    "fallback_conf": 0.05,
+    "fallback_imgsz": 960,
+    "iou": 0.7,
+    "class_id": 0,
+    "max_det": 300,
+    "tracker_iou": 0.7,
+    "tracker_conf": 0.3,
+    "missing": "zero invalid; previous last valid box retained; no interpolation or predicted box",
+    "tie": "first candidate"
+  },
+  "pose_config": "third_party/ViTPose/configs/body/2d_kpt_sview_rgb_img/topdown_heatmap/coco/ViTPose_base_coco_256x192.py",
+  "vitpose_commit": "c050ed29112da7704797cc1a65af0234b525010d",
+  "pose_inference": "official mmpose BGR pipeline, UDP, configured flip TTA; keypoints XY original image; strict COCO17 checkpoint",
+  "quality": {
+    "bbox_coverage_min": 0.8,
+    "pose_coverage_min": 0.8,
+    "pelvis_median_min": 0.3,
+    "pose_valid": "all XY/score finite and any positive confidence; median pelvis=min(hip11,hip12) over all frames including invalid zeros"
+  },
+  "lifting_source_config": "configs/safer_v2_document_reconstruction_v1.json",
+  "lifting": {
+    "window": 243,
+    "stride": 121,
+    "weight": "triangular",
+    "edge_floor": 0.05,
+    "flip_tta": true,
+    "batch": 4,
+    "offline": true
+  },
+  "inference": {
+    "global_config": "configs/global_motion_document_reconstruction_v1.json",
+    "global_config_sha256": "98bc49a215b08e849117cc220073fe898e3ff57db65cea6e3ae2cf0e81f89e60",
+    "global_report_sha256": "14e6ab40368dacf56c95382644c8e65e93ece35a81d2e268f91fa8789b76dcaf",
+    "window": 64,
+    "stride": 8,
+    "append_tail": false,
+    "batch": 32,
+    "cpu_head_atol": 0.0001,
+    "cpu_head_rtol": 1e-05,
+    "classes": [
+      "other",
+      "fall",
+      "lie_down",
+      "lying_down"
+    ],
+    "training": false,
+    "threshold_fitting": false,
+    "G2_deployment_selected": false
+  },
+  "execution": {
+    "gpu": "0",
+    "threads": 2,
+    "seed": 0,
+    "reserve_gib": 64,
+    "minimum_gpu_free_gib": 8,
+    "gpu_memory_fraction": 0.6,
+    "max_added_gib": 24,
+    "pause": "PAUSE_REQUESTED at safe frame/batch boundaries"
+  },
+  "newly_specified": [
+    "Scope expansion only. All inherited inference and scoring settings unchanged.",
+    "Le2i127 supplementary overlaps Le2i38 by22; no combined denominator.",
+    "No new training, score threshold, frontend, or confidence adjustment."
+  ],
+  "scope": "new shared external protocol;3 distinct comparator architectures; not official reported segment metric reproduction",
+  "evaluation": {
+    "heads": [
+      "G0"
+    ],
+    "event": "fall_trigger",
+    "decoder": "D1_DECOUPLED rising edge",
+    "early_seconds": 0.5,
+    "late_seconds": 3.0,
+    "refractory_seconds": 0.0,
+    "gt_time": "unmodified official CSV seconds",
+    "quality_rejection": "no alarm; retain in primary denominator",
+    "recovery_scored": false,
+    "target_training": false,
+    "target_calibration": false,
+    "segment_classification": false,
+    "secondary_video_rule": "any window argmax equals model fall index (own1/comparator9)",
+    "ground_truth": "unchanged audited parent GT; original Le2i annotation / OmniFall CSV per scope",
+    "comparisons": "three distinct SAFER architectures",
+    "early": 0.5,
+    "late": 3.0,
+    "primary": "event F1"
+  },
+  "model": {
+    "encoder": {
+      "path": "checkpoint/ntu60/xsub/ntu60_xs_joint_dste.pth.tar",
+      "sha256": "59a678cb28f2474eb035f6a42833b68a247854404ed1a46dc08964f43aaf3064"
+    },
+    "j1": {
+      "path": "checkpoint/fall/JOINT_V3_DOCUMENT_RECONSTRUCTION_20260922_R3/v3/final/final_j1.pt",
+      "sha256": "2d897a10e5a2f0d03ef743906bfcbc45c9acc1a6397d6dc1bef880387cb69cea"
+    },
+    "g0": {
+      "path": "checkpoint/fall/GLOBAL_MOTION_DOCUMENT_RECONSTRUCTION_20260928_R1/G0/epoch_005.pt",
+      "sha256": "d1d6870e81e154c8b6bfc3138eb16f8e9e8324d5fedcd5a4c808423f2cc632ce"
+    }
+  },
+  "datasets": [
+    "le2i38",
+    "gmdcsa37",
+    "cauca19",
+    "le2i127"
+  ],
+  "models": [
+    "own",
+    "stgcnpp",
+    "msg3d",
+    "cnn1d"
+  ],
+  "source_training": {
+    "own": [
+      "NTU60",
+      "SAFER",
+      "FU-Kinect-Fall"
+    ],
+    "stgcnpp": [
+      "SAFER sub_train"
+    ],
+    "msg3d": [
+      "SAFER sub_train"
+    ],
+    "cnn1d": [
+      "SAFER sub_train per official release config"
+    ]
+  },
+  "comparator_protocol": {
+    "fps": 25,
+    "decision_window": 64,
+    "stride": 8,
+    "native_window": 48,
+    "offset": 16,
+    "append_tail": false,
+    "fall_index": 9,
+    "decision": "multiclass argmax",
+    "dtype": "fp32",
+    "amp": false,
+    "batch": 32,
+    "stgcnpp": "official PreNormalize2D,GenSkeFeat j,Sequential48,FormatGCNInput2",
+    "msg3d": "official PreNormalize2D,GenSkeFeat j,Sequential48,FormatGCNInput2",
+    "cnn1d": "official XYclip x0..1919 y0..1079,ScaleWithNeckMotion(image_width1920),To1DInputShape; confidence not a model input"
+  },
+  "limitations": [
+    "source domain and label space differ; cannot isolate architecture causal effect",
+    "common ViTPoseB instead of SAFER source ViTPoseH",
+    "own whole-video gate vs comparator no3Dgate; failures retained",
+    "offline3D context/global sequence normalization",
+    "EDF and OCCU share subjects; only1CS-testsubject2views each",
+    "OOPS earlier3-video connection check and input diagnostics disclosed; not blind target",
+    "OOPS official716splitrows repeat144paths;572uniquevideos636fall events instead of duplicated parquet829fall rows"
+  ],
+  "reuse_parent": "data/fall_processed/RGB/temporal_continuous_20261002_r1"
+}

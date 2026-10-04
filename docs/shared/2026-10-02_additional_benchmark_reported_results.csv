@@ -1,0 +1,31 @@
+dataset,model,train,target_training_included,sensitivity_pct,specificity_pct,fall_f1_pct,metric_unit,source,source_table,result_origin,qualification
+UP-Fall [20],Qwen,ZS,False,21.1,90.9,27.4,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+UP-Fall [20],IntVL,ZS,False,77.2,86.8,68.8,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+UP-Fall [20],VMAE,CMDF,False,12.3,98.8,21.1,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+UP-Fall [20],VMAE,Sta,True,95.6,98.8,95.6,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+UP-Fall [20],VMAE,Syn,False,63.2,99.3,76.2,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+UP-Fall [20],VMAE,St+Sy,True,96.5,99.3,96.9,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+Le2i [8],Qwen,ZS,False,9.1,99.4,16,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+Le2i [8],IntVL,ZS,False,27.3,98.3,38.7,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+Le2i [8],VMAE,CMDF,False,77.3,97.8,79.1,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+Le2i [8],VMAE,Sta,True,100,100,100,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+Le2i [8],VMAE,Syn,False,59.1,100,74.3,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+Le2i [8],VMAE,St+Sy,True,100,99.4,97.8,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+EDF [34],Qwen,ZS,False,0,100,0,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,EDF: reported recall denominator not reconciled with current 16 fall segments
+EDF [34],IntVL,ZS,False,25,97.3,34.8,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,EDF: reported recall denominator not reconciled with current 16 fall segments
+EDF [34],VMAE,CMDF,False,6.2,96.4,9.5,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,EDF: reported recall denominator not reconciled with current 16 fall segments
+EDF [34],VMAE,Sta,True,82.4,95.5,77.8,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,EDF: reported recall denominator not reconciled with current 16 fall segments
+EDF [34],VMAE,Syn,False,35.3,92.8,38.7,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,EDF: reported recall denominator not reconciled with current 16 fall segments
+EDF [34],VMAE,St+Sy,True,82.4,95.5,77.8,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,EDF: reported recall denominator not reconciled with current 16 fall segments
+OCCU [34],Qwen,ZS,False,31.2,100,47.6,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+OCCU [34],IntVL,ZS,False,12.5,100,22.2,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+OCCU [34],VMAE,CMDF,False,0,100,0,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+OCCU [34],VMAE,Sta,True,100,97.6,94.1,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+OCCU [34],VMAE,Syn,False,37.5,100,54.5,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+OCCU [34],VMAE,St+Sy,True,100,97.6,94.1,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+CaucaF. [16],Qwen,ZS,False,100,92.1,85.7,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+CaucaF. [16],IntVL,ZS,False,100,86.8,78.3,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+CaucaF. [16],VMAE,CMDF,False,66.7,100,80,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+CaucaF. [16],VMAE,Sta,True,88.9,100,94.1,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+CaucaF. [16],VMAE,Syn,False,77.8,94.7,77.8,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ
+CaucaF. [16],VMAE,St+Sy,True,100,100,100,GT-segment classification,https://arxiv.org/html/2505.19889v3,3,paper_reported_not_rerun,Same test scope and metric required; training sources differ

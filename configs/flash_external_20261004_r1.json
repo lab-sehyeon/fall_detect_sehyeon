@@ -1,0 +1,53 @@
+{
+  "experiment_id": "FLASH_EXTERNAL_20261004_R1",
+  "model": "source-trained official FLASH network with explicitly documented IO corrections",
+  "input": {
+    "mediapipe": "0.10.21",
+    "model_complexity": 1,
+    "static_image_mode": false,
+    "smooth_landmarks": true,
+    "enable_segmentation": false,
+    "min_detection_confidence": 0.5,
+    "min_tracking_confidence": 0.5,
+    "coordinates": "pose_landmarks normalized x/y/z, standard MediaPipe landmark order",
+    "image": "full original frame BGR->RGB; no manually annotated crop or GrabCut",
+    "timing": "all native decoded frames in order; preserve original PTS; no temporal resampling",
+    "missing": "causal carry-forward of latest detected pose in context; zero before first detection; mask undetected output frames false",
+    "whole_video_failure": "decode/hash/shape error or no detected pose; keep denominator, empty predictions"
+  },
+  "temporal": {
+    "length": 100,
+    "stride": 100,
+    "tail": "repeat final frame to 100; ignore padded outputs",
+    "aggregation": "each real frame occurs once; sigmoid logit>0; no smoothing/refractory",
+    "causal": false,
+    "meaning": "offline frame localization; padded temporal convolutions see future frames within block; no online latency claim"
+  },
+  "evaluation": {
+    "early_seconds": 0.5,
+    "late_seconds": 3.0,
+    "alarm": "rising edges of detected positive frames",
+    "video_prediction": "one or more alarms",
+    "failure": "retain all videos and GT; empty predictions"
+  },
+  "target_training": false,
+  "target_threshold_tuning": false,
+  "source_threshold": "official logit>0 (probability>0.5)",
+  "provenance": {
+    "frontend_defaults": "https://chuoling.github.io/mediapipe/solutions/pose.html",
+    "skeleton_source": "https://github.com/Tresor-Koffi/3D_skeletons-UP-Fall-Dataset",
+    "external_adapter": "new evaluation integration fixed before target inference; not official author RGB evaluation"
+  },
+  "limitations": [
+    "source historical MediaPipe version and extraction code unavailable",
+    "source dataset README describes crop/GrabCut; no target annotation crop or manual mask used",
+    "source normalized-coordinate interpretation based on supplied coordinate distribution and MediaPipe API; no world-coordinate conversion",
+    "official network topology retained even where joint names in code differ from standard MediaPipe names"
+  ],
+  "execution": {
+    "pose_workers": 4,
+    "pose_device": "CPU",
+    "classifier_device": "physical GPU0",
+    "classifier_batch": 4
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "experiment_id": "JOINT_V3_DOCUMENT_RECONSTRUCTION_20260922_R2",
+  "base_config": "configs/joint_document_reconstruction_v1.json",
+  "base_config_sha256": "61b5be449ba13e5aa088f618dd4556ee596c8727fc0327a5c9fcb22c8ea9bf35",
+  "controls_config": "configs/safer_v3_controls_document_reconstruction_v2.json",
+  "controls_config_sha256": "df6adb95e5a3e28e807d0cdbce6c2a84fa3b369ff5e730d9d0e98d3cf5aa4284",
+  "controls_root": "checkpoint/fall/F0_CONTROLS_SAFER_V3_DOCUMENT_RECONSTRUCTION_20260922_R2",
+  "data_root": "data/fall_processed/SAFER-Activities/v3_document_reconstruction_20260922_r2/sequence_cache",
+  "output_dir": "checkpoint/fall/JOINT_V3_DOCUMENT_RECONSTRUCTION_20260922_R2",
+  "method": "identical reconstructed V1/V2 J0/J1 training, development/locked/nested/final stages, new nested median epochs; only SAFER input lineage changes",
+  "historical_exact_reproduction": false
+}

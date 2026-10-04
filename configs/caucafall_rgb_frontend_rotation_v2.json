@@ -1,0 +1,7 @@
+{
+  "schema_version": 2,
+  "parent": "configs/caucafall_rgb_frontend_v1.json",
+  "recovery_rotations_degrees": [90, 270],
+  "apply_only_when_v1_invalid": true,
+  "status": "implemented"
+}

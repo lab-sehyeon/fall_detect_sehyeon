@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "canonical_fps": 25.0,
+  "minimum_frames": 64,
+  "window_size": 64,
+  "stride": 8,
+  "detector": "YOLOv8x_COCO_person",
+  "tracker": {"previous_box_iou_weight": 0.7, "confidence_weight": 0.3},
+  "pose_2d": "ViTPose-B_Multi_COCO17_256x192",
+  "pose_3d": {
+    "model": "MotionAGFormer-B_H36M17",
+    "window": 243,
+    "stride": 121,
+    "overlap_weight": "triangular",
+    "edge_floor": 0.05
+  },
+  "skeleton_adapter": "H36M17_to_proxy_NTU25",
+  "global_feature_dim": 131,
+  "model_assets_available": false
+}

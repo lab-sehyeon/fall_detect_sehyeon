@@ -1,0 +1,10 @@
+{
+  "experiment_id":"S0GT0_DOCUMENT_RECONSTRUCTION_20260929_R1",
+  "output":"data/fall_processed/SAFER-Activities/s0gt0_document_reconstruction_20260929_r1",
+  "s0a_config":"configs/s0a_document_reconstruction_v1.json",
+  "splits":["train","val"],
+  "historical_exact_reproduction":false,
+  "labels":{"background":0,"falling":1,"post_fall":2,"recovering":3,"ignore":-1},
+  "definition":{"fall":"maximal coarse10 run","episode_end":"next fall start or sequence end","recovery":"first maximal coarse7 run after fall end and before next fall; that run only","post_fall":"fall end until first recovery start","unresolved_episode":"post-fall until episode end becomes ignore","after_recovery":"background after first recovery run end until next fall","getting_up_without_episode":"background hard negative","source_no_label":"original no_label may receive contextual target inside known episode; no special additional masking","frames":"full original sequence, including uncovered window tail","online_annotation_claim":false},
+  "execution":{"reserve_gib":64,"new_output_gib_max":0.03}
+}
