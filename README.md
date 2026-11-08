@@ -1,140 +1,91 @@
-# Skeleton-Based Fall Detection
+# Fall-Specific Adaptation of a Frozen Skeleton Action Model
 
-A research implementation of fall detection from RGB video using pretrained 3D
-skeleton representations. The project builds on
-[FoundSkelModel](https://github.com/wengwanjiang/FoundSkelModel) and adds a residual
-feature adapter and a fall classifier while keeping the skeleton encoder frozen.
+Code and reproducibility inputs for the revised fall-detection study. A frozen
+DSTE encodes skeleton sequences; a residual adapter and four-class head provide
+fall-specific predictions. Raw denotes the independently trained raw-feature head
+without an adapter, No-FU denotes adaptation on SAFER only, and Full G0 denotes
+the proposed SAFER+FU adapter followed by the refit classifier.
 
-The repository includes training and evaluation code, experiment configurations,
-and research reports, including comparisons on Le2i and CAUCAFall.
+## Reproduce the reported results
 
-## Method
+Use Python 3.10. The following CPU commands regenerate the repeated-run metrics,
+ablation contrasts, ROC/confusion figures and conditional paired bootstrap intervals
+from the released predictions. They check the results against fixed reference values.
 
-The pipeline preserves the temporal order of video frames through pose estimation,
-3D reconstruction, and skeleton feature extraction.
-
-```text
-RGB video
-  -> Person detection and 2D pose estimation
-  -> Pose quality screening
-  -> 3D skeleton reconstruction
-  -> Temporal windows
-  -> Frozen pretrained skeleton encoder
-  -> Residual feature adapter
-  -> Four-class classifier
-  -> Fall event decoding
+```bash
+python -m pip install -r requirements-revision.txt
+python revision_20261108/reproduce.py
+python revision_20261108/bootstrap.py
 ```
 
-- **Video processing:** YOLOv8 detects people, ViTPose estimates 2D joints, and
-  MotionAGFormer reconstructs 3D skeleton sequences.
-- **Representation learning:** the pretrained DSTE encoder from FoundSkelModel
-  provides fixed skeleton features and is excluded from fall-training optimization.
-- **Feature adaptation:** a residual adapter is trained with SAFER-Activities and
-  FU-Kinect-Fall, using dataset-specific supervision.
-- **Fall classification:** the final classifier is trained on SAFER-Activities to
-  distinguish other activity, falling, the motion of lying down, and a lying posture.
-- **Event decoding:** consecutive fall predictions are converted into fall alarms
-  for evaluation.
+Outputs go to `revision_20261108/generated/`. The fixed predictions, labels, split
+lists, configurations and checksums are reproduction inputs, so they remain in the
+repository. See [the reproduction guide](revision_20261108/README.md) for details.
 
-The evaluated pipeline uses whole-video quality checks and future temporal context
-in 3D reconstruction. The reported results are offline evaluations; real-time
-latency and deployment performance have not been established.
+## Run the trained fall heads
 
-## External Evaluation
+Install PyTorch separately for your hardware. The revision used PyTorch 2.7.1,
+torchvision 0.22.1 and CUDA 12.8. Obtain `revision_trained_heads.zip` from the
+[fixed release](https://github.com/lab-sehyeon/fall_detect_sehyeon/releases/tag/revision-20261109-r2)
+and extract its `weights/` directory. The archive contains 15 selected state files
+for seeds 0–4; [weight_manifest.json](revision_20261108/weight_manifest.json)
+records their checksums.
 
-The following results come from local evaluations on the same **130 Le2i videos**
-and **100 CAUCAFall videos** for each model. All values are **video-level percentages**,
-with fall as the positive class. Processing failures remain in the evaluation
-population and are treated as producing no alarm.
+```bash
+python revision_20261108/infer_features.py \
+  --features pooled_features.npy --weights weights \
+  --condition full_g0 --seed 0 --output logits.npy
+```
 
-| Method | Le2i Precision | Le2i Recall | Le2i F1 | CAUCAFall Precision | CAUCAFall Recall | CAUCAFall F1 |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| **Ours** | **95.56** | **86.87** | **91.01** | **97.50** | **78.00** | **86.67** |
-| Pretrained encoder + NTU60 classifier | 98.63 | 72.73 | 83.72 | 90.91 | 40.00 | 55.56 |
-| HFD 3D-CNN+SVM (reproduction) | 86.21 | 25.25 | 39.06 | 51.61 | 96.00 | 67.13 |
-| Privacy X3D-UDA (RGB inference) | 98.21 | 55.56 | 70.97 | 60.26 | 94.00 | 73.44 |
-| FLASH (reproduction) | 76.15 | 100.00 | 86.46 | 49.49 | 98.00 | 65.77 |
+The input is float32 `[N, 2048]` pooled DSTE features. Supported configurations are
+`raw`, `no_fu_j1`, `no_fu_g0`, `full_j1`, and `full_g0`. This command applies the
+fixed heads; it does not generate poses from RGB.
 
-These are measurements of the evaluated implementations, rather than performance
-numbers copied from their papers. Training sources and input processing differ:
+## Train from source feature caches
 
-- The encoder baseline uses the author's pretrained encoder and a 60-class linear
-  classifier trained in this project on NTU60. Its falling action class supplies
-  the fall prediction.
-- HFD uses the author's C3D feature extractor and a newly trained SVM on GMDCSA.
-  FLASH uses the official architecture retrained on the available UP-Fall sequences.
-- Privacy X3D-UDA uses an author-provided checkpoint trained with RGB and depth,
-  evaluated here with RGB input.
+The [reproduction guide](revision_20261108/README.md#feature-level-retraining)
+specifies source array shapes, ordering, label meanings, and the command for
+`train_features.py`. The training core, selected settings and split lists are
+retained. No test labels are used for fitting or checkpoint selection.
 
-No target-domain fitting or threshold tuning was performed in these evaluation
-runs. The target datasets had been inspected in earlier analyses, and overlap with
-all upstream pretraining data has not been fully audited. These comparisons do not
-isolate the effect of the adapter alone.
+## Source preprocessing and comparison implementations
 
-See the [evaluation report](docs/shared/2026-10-04_external_comparison_summary_shared.md)
-and [results CSV](docs/shared/2026-10-04_external_comparison_summary_selected_results.csv)
-for training provenance, processing coverage, confusion counts, and event-level
-results where available.
-
-## Repository Layout
-
-| Path | Contents |
+| Path | Purpose |
 | --- | --- |
-| `model/` | Pretrained skeleton model architecture |
-| `fall_pipeline/` | Feature adaptation, classification, and evaluation modules |
-| `data_gen/` | Dataset preparation and skeleton preprocessing |
-| `configs/` | Model and experiment configurations |
-| `scripts/` | Data preparation, training, evaluation, and reporting tools |
-| `tests/` | Tests for model components, preprocessing, and evaluation logic |
-| `docs/shared/` | Research methods, evaluation reports, and result tables |
+| `model/`, `tools.py` | DSTE architecture and shared utilities |
+| `fall_pipeline/revision/`, `fall_pipeline/joint/` | Revision training and adapter/head components |
+| `data_gen/`, `fall_pipeline/safer/`, `fall_pipeline/fu/` | Skeleton conversion, source preprocessing and feature helpers |
+| `fall_pipeline/external/` | RGB frontend, lifting and external inference components |
+| `scripts/`, `configs/` | Retained preparation/evaluation entry points, comparator implementations and their dependencies |
+| `revision_20261108/` | Verified feature-level entry points and quantitative reproduction inputs |
+| `tests/` | Existing checks for retained components |
 
-## Reproducibility and Assets
+The retained RGB/comparator scripts use separately obtained datasets, third-party
+checkouts and weights, and historical manifests. They are not a newly validated
+one-command reconstruction of every original pipeline. The verified release scope
+is fixed-feature inference and quantitative regeneration; raw RGB preprocessing
+and all comparator training have not been independently reconstructed end to end.
+The older full-pipeline requirements are preserved for those components and are
+not the RTX 5080 installation instructions.
 
-This source repository provides code, configurations, tests, and research reports.
-Dataset files, model checkpoints, third-party repository checkouts, private experiment
-records, and illustrations extracted from dataset videos are excluded from the
-publication package. Obtain external assets from their original distributors under
-the applicable terms.
+## Evaluation scope
 
-Some experiment tools require separately prepared manifests and execution records.
-The repository alone is therefore insufficient to rerun every historical experiment
-without preparing those inputs. Dependency specifications are recorded in
-[requirements-fall-detect.txt](requirements-fall-detect.txt) and
-[requirements-recovered.txt](requirements-recovered.txt).
+Five-run video F1 was 89.13 ± 1.70% on CAUCAFall and 91.50 ± 0.88% on Le2i for
+Full G0, versus 86.15 ± 2.42% and 91.30 ± 0.94% for Raw. Values are mean ± sample
+SD, not uncertainty intervals for new populations. Full−Raw mean differences
+were +2.98 and +0.20 percentage points; both participant-cluster 95% intervals
+include zero. These are offline, selected-person-track results with failed inputs
+retained as no-alert outcomes. The source/transfer trade-offs and simpler variants
+are included in the released results.
 
-The [active configuration](configs/active_fall_model.json) identifies the current
-model components and evaluation entry point.
+## Assets and attribution
 
-## Documentation
+Obtain original videos, pose data, the pretrained DSTE and frontend weights from
+their providers under the corresponding terms. They are not redistributed here.
+The release contains author-trained adapter/head weights only. The earlier fixed
+release remains available for provenance; normal Git history is preserved.
 
-- [Methods](docs/shared/2026-09-29_paper_methods_main_shared.md)
-- [Research rationale and evidence](docs/shared/2026-10-04_research_strengths_paper_rationale_shared.md)
-- [External comparison results](docs/shared/2026-10-04_external_comparison_summary_shared.md)
-- [Research documentation index](docs/shared/README.md)
-- [Contribution guide](CONTRIBUTING.md)
-
-Detailed research reports are currently primarily written in Korean.
-
-## Acknowledgments
-
-This project builds on the official
-[FoundSkelModel implementation](https://github.com/wengwanjiang/FoundSkelModel) and
-[Foundation Model for Skeleton-Based Human Action Understanding](https://arxiv.org/abs/2508.12586).
-The RGB processing pipeline also uses YOLOv8, ViTPose, and MotionAGFormer.
-Their contributions remain attributed to the original authors.
-
-## License
-
-The upstream FoundSkelModel code is distributed under **Apache-2.0**, and its
-[original license](LICENSE) is preserved. See
-[Third-Party Notices](THIRD_PARTY_NOTICES.md) for component-specific licenses,
-attributions, and redistribution considerations.
-
-Ultralytics YOLOv8 is subject to **AGPL-3.0 or a separate Enterprise agreement**.
-The applicable obligations for a combined distribution require consideration of
-its scope; the root Apache license does not provide Apache-only permission for the
-entire pipeline. See the [Ultralytics licensing guidance](https://www.ultralytics.com/license).
-
-Model weights, datasets, source videos, and extracted images have separate terms.
-Preserve the applicable copyright notices and license texts when redistributing
-third-party material.
+This project builds on [FoundSkelModel](https://github.com/wengwanjiang/FoundSkelModel).
+Keep its [LICENSE](LICENSE), the [third-party notices](THIRD_PARTY_NOTICES.md), and
+component-specific notices when redistributing code. Dataset and model assets have
+their own terms. This is the public author repository, not an anonymous repository.
