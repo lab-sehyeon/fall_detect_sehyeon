@@ -1,0 +1,13 @@
+Dataset,Method,Runs,Precision (%),Recall (%),F1 (%)
+CAUCAFall,Raw,5,97.13 ± 1.92,77.60 ± 4.98,86.15 ± 2.42
+CAUCAFall,Full G0,5,97.31 ± 2.30,82.40 ± 4.34,89.13 ± 1.70
+CAUCAFall,Original USDRL,1 (submitted),95.00,38.00,54.29
+CAUCAFall,FLASH,1 (submitted),49.49,98.00,65.77
+CAUCAFall,HFD 3D-CNN+SVM,1 (submitted),51.61,96.00,67.13
+CAUCAFall,Privacy X3D-UDA RGB,1 (submitted),60.26,94.00,73.44
+Le2i,Raw,5,96.23 ± 2.08,86.87 ± 0.00,91.30 ± 0.94
+Le2i,Full G0,5,96.42 ± 0.51,87.07 ± 1.32,91.50 ± 0.88
+Le2i,Original USDRL,1 (submitted),98.59,70.71,82.35
+Le2i,FLASH,1 (submitted),76.15,100.00,86.46
+Le2i,HFD 3D-CNN+SVM,1 (submitted),86.21,25.25,39.06
+Le2i,Privacy X3D-UDA RGB,1 (submitted),98.21,55.56,70.97

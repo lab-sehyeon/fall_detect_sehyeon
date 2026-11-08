@@ -1,0 +1,7 @@
+Case,GT,Prediction (seed 0),Window start (s),Reference (s),Window end (s)
+fall,other,other,687.68,688.96,690.20
+fall,fall,fall,689.28,690.56,691.80
+fall,lie_down,other,690.88,692.16,693.40
+lying_transition,other,other,858.88,860.16,861.40
+lying_transition,lying_down,lying_down,860.48,861.76,863.00
+lying_transition,lie_down,lie_down,862.08,863.36,864.60

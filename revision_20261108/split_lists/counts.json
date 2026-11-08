@@ -1,0 +1,22 @@
+[
+  {
+    "split": "train",
+    "original_sha256": "b81cfaf3152e6734651389383559e756865f99a434959203921b234512387ee1",
+    "windows": 609183
+  },
+  {
+    "split": "val",
+    "original_sha256": "77eb2117435e035d42eb60727fb7d1f5c4ab925f30d9da16c0cf947f8505b736",
+    "windows": 106680
+  },
+  {
+    "split": "test",
+    "original_sha256": "b3c04c53beecb123d6ce84f194d6a48a01ba728f3e9746272664a5dcc2714d98",
+    "windows": 219896
+  },
+  {
+    "split": "ood",
+    "original_sha256": "ea50dc4268e77856887cabc182a0af416d68cdf1c62d6ed5ecfad1bb183ba3c4",
+    "windows": 71964
+  }
+]

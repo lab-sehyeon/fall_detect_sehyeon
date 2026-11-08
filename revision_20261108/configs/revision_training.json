@@ -1,0 +1,81 @@
+{
+  "joint": {
+    "model": {
+      "feature_dim": 2048,
+      "bottleneck": 256,
+      "dropout": 0.1,
+      "adapter": "LayerNorm -> Linear -> GELU -> Dropout -> zero-init Linear -> residual add",
+      "j0": "Identity adapter, separate SAFER4/FU2 heads",
+      "head_initialization": "normal mean0 std0.01, bias0",
+      "j1_initialization": "new adapter seed0; copy selected J0 heads; no DSTE/ADL loaded or optimized",
+      "feature_scaler": "none"
+    },
+    "training": {
+      "seed": 0,
+      "j0_epochs": 21,
+      "j1_epochs": 12,
+      "safer_batch_size": 8192,
+      "fu_batch_size": 32,
+      "eval_batch_size": 4096,
+      "optimizer": "AdamW",
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0.0001,
+      "j0_lr": 0.001,
+      "j0_schedule": [
+        20,
+        25
+      ],
+      "adapter_lr": 0.0001,
+      "head_lr": 5e-05,
+      "j1_schedule": [
+        12,
+        16
+      ],
+      "gamma": 0.1,
+      "loss": "sum of SAFER and FU CE; each has train-only inverse-sqrt class counts normalized by mean; absent count clamped1",
+      "sampling": "one pass shuffled SAFER per epoch; each step one FU32 batch, cycle independent shuffled train-only FU indices without dropping samples",
+      "shuffle": "CPU generator seed+2*epoch for SAFER and seed+2*epoch+1 for FU; epoch starts at1",
+      "selection": "final fixed-duration epoch; no epoch selection",
+      "j1_epoch0_eligible": true
+    }
+  },
+  "classifier": {
+    "training": {
+      "seed": 0,
+      "epochs": 50,
+      "batch_size": 512,
+      "eval_batch_size": 4096,
+      "optimizer": "SGD",
+      "lr": 0.006,
+      "momentum": 0.9,
+      "weight_decay": 0.0,
+      "schedule": "constant over50epochs",
+      "class_weight": "train-only inverse-sqrt counts normalized by mean; absent count clamp1",
+      "init": "each linear normal(0,0.01),bias0,seed0",
+      "shuffle": "CPU torch.Generator seed+epoch, same order for G0/G1/G2, drop_last=false",
+      "selection": "per-variant validation macroF1 then conditional fall-vs-lie AP; exact ties earliest epoch",
+      "holdout": "test/ood features, labels and metrics only after selection lock; no retuning",
+      "adoption_gate": {
+        "macro_gain_min": 0.005,
+        "fall_recall_drop_max": 0.01,
+        "lie_down_f1_drop_max": 0.01
+      }
+    }
+  },
+  "fixed_duration": {
+    "j0": 21,
+    "j1": 12
+  },
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "feature_contract": "Corrected confidence-alignment DSTE pooled features; SAFER 25Hz reference-frame labels; FU native30 clip mean; no feature scaling"
+}

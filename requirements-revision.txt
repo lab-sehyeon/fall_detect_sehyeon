@@ -1,0 +1,6 @@
+# CPU-only metric/figure/CI regeneration, Python 3.10.
+# Feature inference/training additionally requires a suitable PyTorch installation.
+numpy==1.23.5
+pandas==2.1.4
+scikit-learn==1.3.2
+matplotlib==3.8.4
