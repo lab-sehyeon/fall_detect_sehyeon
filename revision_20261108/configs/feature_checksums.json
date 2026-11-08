@@ -1,0 +1,218 @@
+{
+  "train": {
+    "count": 609183,
+    "payload": {
+      "features.npy": {
+        "sha256": "0892f9120ae2ec5f07d61ec2dccd8c6cee6302451e5792b61cf59edb8b689e1b",
+        "bytes": 4990427264,
+        "shape": [
+          609183,
+          2048
+        ],
+        "dtype": "float32"
+      },
+      "labels.npy": {
+        "sha256": "24f2bbe7494604f0a256a11a712cd86a7439a7297f14d0000ae20a9cc62d0db0",
+        "bytes": 4873592,
+        "shape": [
+          609183
+        ],
+        "dtype": "int64"
+      },
+      "center_coarse_labels.npy": {
+        "sha256": "728d18acd1a7cfdedd622442cfcc33f3389427e4dbd324cf409a0ced3042a3d1",
+        "bytes": 4873592,
+        "shape": [
+          609183
+        ],
+        "dtype": "int64"
+      },
+      "center_derived_labels.npy": {
+        "sha256": "24f2bbe7494604f0a256a11a712cd86a7439a7297f14d0000ae20a9cc62d0db0",
+        "bytes": 4873592,
+        "shape": [
+          609183
+        ],
+        "dtype": "int64"
+      },
+      "sequence_index.npy": {
+        "sha256": "0bf1d9c848a4e3bfd04e3a6dffd1c04231b9b23e409751a76b419bd780df08de",
+        "bytes": 4873592,
+        "shape": [
+          609183
+        ],
+        "dtype": "int64"
+      },
+      "window_start.npy": {
+        "sha256": "0e3a9e0f73717225430e5bf4bb6d49ffbc5ede279d626511fcc3996ce426f2c8",
+        "bytes": 4873592,
+        "shape": [
+          609183
+        ],
+        "dtype": "int64"
+      }
+    }
+  },
+  "val": {
+    "count": 106680,
+    "payload": {
+      "features.npy": {
+        "sha256": "eca1d41fec5bcc3dd4e1442a86cc0d787fce2322e403546a9ade7a90be5072d8",
+        "bytes": 873922688,
+        "shape": [
+          106680,
+          2048
+        ],
+        "dtype": "float32"
+      },
+      "labels.npy": {
+        "sha256": "3ae2c9c33192e360d83797a6fd7af9739251becfe913370f7a7725b20b50b8b5",
+        "bytes": 853568,
+        "shape": [
+          106680
+        ],
+        "dtype": "int64"
+      },
+      "center_coarse_labels.npy": {
+        "sha256": "07f01e1399c2a65b69cd376e61d200a27e5cb5c315cecd3d34b6048c29e363e6",
+        "bytes": 853568,
+        "shape": [
+          106680
+        ],
+        "dtype": "int64"
+      },
+      "center_derived_labels.npy": {
+        "sha256": "3ae2c9c33192e360d83797a6fd7af9739251becfe913370f7a7725b20b50b8b5",
+        "bytes": 853568,
+        "shape": [
+          106680
+        ],
+        "dtype": "int64"
+      },
+      "sequence_index.npy": {
+        "sha256": "4ce5a5ee55c0db4acc8694366fecf6aa8730404c559e7d8f34ba5e0cb3f50aeb",
+        "bytes": 853568,
+        "shape": [
+          106680
+        ],
+        "dtype": "int64"
+      },
+      "window_start.npy": {
+        "sha256": "cbc9c90f97fb280f31274ed2c8b8c6704e91476e9061f8e2772a987f44ef9ecf",
+        "bytes": 853568,
+        "shape": [
+          106680
+        ],
+        "dtype": "int64"
+      }
+    }
+  },
+  "test": {
+    "count": 219896,
+    "payload": {
+      "features.npy": {
+        "sha256": "ebd42123a4a9661f4235b0afe6c5a339537dae20e0f7dadf15801e589783a150",
+        "bytes": 1801388160,
+        "shape": [
+          219896,
+          2048
+        ],
+        "dtype": "float32"
+      },
+      "labels.npy": {
+        "sha256": "a116bf78b9c8f8a5159e6918bd99d20bed2cfd2add5f07ab397e4231ba39b341",
+        "bytes": 1759296,
+        "shape": [
+          219896
+        ],
+        "dtype": "int64"
+      },
+      "center_coarse_labels.npy": {
+        "sha256": "04f4fff1524be8e8725e4d7b246c2c5b81e7c140d206f4fb9f55a09475e83948",
+        "bytes": 1759296,
+        "shape": [
+          219896
+        ],
+        "dtype": "int64"
+      },
+      "center_derived_labels.npy": {
+        "sha256": "a116bf78b9c8f8a5159e6918bd99d20bed2cfd2add5f07ab397e4231ba39b341",
+        "bytes": 1759296,
+        "shape": [
+          219896
+        ],
+        "dtype": "int64"
+      },
+      "sequence_index.npy": {
+        "sha256": "dc0797be807fe1bc1bda7211dc01d00f88d0d2e7edd9e2702811abb85366b540",
+        "bytes": 1759296,
+        "shape": [
+          219896
+        ],
+        "dtype": "int64"
+      },
+      "window_start.npy": {
+        "sha256": "e29ab4b5eaea399576202d43a035eb4195cb3dea7c2b4b57c410550f205d962b",
+        "bytes": 1759296,
+        "shape": [
+          219896
+        ],
+        "dtype": "int64"
+      }
+    }
+  },
+  "ood": {
+    "count": 71964,
+    "payload": {
+      "features.npy": {
+        "sha256": "c66929e332c9e0421d6abb78bc04f597d0932727faa56731b6f86e297ce1376c",
+        "bytes": 589529216,
+        "shape": [
+          71964,
+          2048
+        ],
+        "dtype": "float32"
+      },
+      "labels.npy": {
+        "sha256": "da4d30bb68edaa2c13daaa8ad47a73d2f68afcac388698f198f5252dc01fc6bf",
+        "bytes": 575840,
+        "shape": [
+          71964
+        ],
+        "dtype": "int64"
+      },
+      "center_coarse_labels.npy": {
+        "sha256": "6f28cb33828355ca276132f97b71a4d94b5e3e5b3684c29642929ae7b989ab77",
+        "bytes": 575840,
+        "shape": [
+          71964
+        ],
+        "dtype": "int64"
+      },
+      "center_derived_labels.npy": {
+        "sha256": "da4d30bb68edaa2c13daaa8ad47a73d2f68afcac388698f198f5252dc01fc6bf",
+        "bytes": 575840,
+        "shape": [
+          71964
+        ],
+        "dtype": "int64"
+      },
+      "sequence_index.npy": {
+        "sha256": "e558fa4ac4fbc4ce69915d7f79e344bb75bef4178622dfc4d76bcb010cfbeb2f",
+        "bytes": 575840,
+        "shape": [
+          71964
+        ],
+        "dtype": "int64"
+      },
+      "window_start.npy": {
+        "sha256": "2cc44a476048e758e4bce2a87d2201c133e2e4e7c3b9d7efe8a64c1d353eb104",
+        "bytes": 575840,
+        "shape": [
+          71964
+        ],
+        "dtype": "int64"
+      }
+    }
+  }
+}

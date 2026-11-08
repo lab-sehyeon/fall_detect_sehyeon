@@ -1,0 +1,6 @@
+Condition,FU,Final head,CAUCAFall F1 (%),Le2i F1 (%)
+Raw,No,linear probe,86.15 ± 2.42,91.30 ± 0.94
+No-FU J1,No,J1,89.71 ± 0.82,90.91 ± 0.65
+No-FU G0,No,G0,88.73 ± 1.53,91.37 ± 0.46
+Full J1,Yes,J1,88.95 ± 1.67,91.16 ± 0.54
+Full G0,Yes,G0,89.13 ± 1.70,91.50 ± 0.88

@@ -1,0 +1,6 @@
+Module,Parameters
+Raw linear head,8196
+Residual adapter,1054976
+Adapter + G0 inference branch,1063172
+J1 adapter + both source heads,1067270
+G0 refit head only,8196

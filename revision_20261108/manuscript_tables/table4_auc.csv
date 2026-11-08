@@ -1,0 +1,13 @@
+Dataset,Method,Runs,ROC-AUC (%)
+CAUCAFall,Raw,5,88.69 ± 0.26
+CAUCAFall,Full G0,5,89.19 ± 0.37
+CAUCAFall,Original USDRL,1 (submitted),85.24
+CAUCAFall,FLASH,1 (submitted),54.48
+CAUCAFall,HFD 3D-CNN+SVM,1 (submitted),56.20
+CAUCAFall,Privacy X3D-UDA RGB,1 (submitted),64.20
+Le2i,Raw,5,88.14 ± 0.11
+Le2i,Full G0,5,88.05 ± 0.25
+Le2i,Original USDRL,1 (submitted),85.86
+Le2i,FLASH,1 (submitted),50.47
+Le2i,HFD 3D-CNN+SVM,1 (submitted),70.97
+Le2i,Privacy X3D-UDA RGB,1 (submitted),87.42
