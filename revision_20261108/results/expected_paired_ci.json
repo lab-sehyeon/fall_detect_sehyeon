@@ -1,0 +1,22 @@
+{
+  "cauca100": {
+    "subject_cluster": {
+      "low_pp": -0.6492257150972409,
+      "high_pp": 6.9838382794207465
+    },
+    "class_stratified_video": {
+      "low_pp": -1.3461027459694956,
+      "high_pp": 7.710394776486396
+    }
+  },
+  "le2i130": {
+    "subject_cluster": {
+      "low_pp": -0.07519267124884871,
+      "high_pp": 0.7181230873852407
+    },
+    "class_stratified_video": {
+      "low_pp": -0.7296786471435445,
+      "high_pp": 1.1305939286084405
+    }
+  }
+}

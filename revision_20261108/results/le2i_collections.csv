@@ -1,0 +1,7 @@
+collection,release_videos,release_annotations,evaluated_videos,fall,nonfall,included
+Coffee_room_01,48,48,48,48,0,True
+Coffee_room_02,22,22,22,14,8,True
+Home_01,30,30,30,30,0,True
+Home_02,30,30,30,7,23,True
+Office,33,0,0,0,0,False
+Lecture_room,27,0,0,0,0,False

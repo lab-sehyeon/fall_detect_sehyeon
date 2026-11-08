@@ -1,0 +1,16 @@
+{
+  "videos": 230,
+  "snapshots": 1150,
+  "reviewer": "AI assistant visual inspection",
+  "counts": {
+    "cauca100": {
+      "videos": 100,
+      "visible_multiple": 0
+    },
+    "le2i130": {
+      "videos": 130,
+      "visible_multiple": 0
+    }
+  },
+  "scope": "five fixed snapshots per video; absence between sampled frames not established; no human exhaustive review"
+}

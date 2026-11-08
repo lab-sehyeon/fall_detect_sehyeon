@@ -1,0 +1,145 @@
+{
+  "dataset": "FU-Kinect-Fall",
+  "revision": "ntu25_official_umurl_v1_recovered",
+  "source_archive_sha256": "dfd9f19db5915a5b31b62d333c9199a0a468659587468bb59e90d61db37a51ab",
+  "official_dataset_url": "https://github.com/MuzafferAslan23/Fall-Detection-Dataset",
+  "paper_doi": "10.17341/gazimmfd.369347",
+  "official_design": {
+    "subjects": 21,
+    "actions": 6,
+    "repetitions": 8,
+    "reported_clips": 1008
+  },
+  "observed_raw_skeleton_clips": 1006,
+  "included_clips": 993,
+  "excluded_clips": 13,
+  "exclusion_reason_counts": {
+    "exact_duplicate_across_subjects_exclude_all": 6,
+    "exact_duplicate_within_subject_keep_first": 6,
+    "unexpected_repetition_outside_1_to_8": 1
+  },
+  "actions": [
+    "walking",
+    "bending",
+    "sitting",
+    "squatting",
+    "lying",
+    "falling"
+  ],
+  "binary_label": {
+    "positive": "falling",
+    "negative": [
+      "walking",
+      "bending",
+      "sitting",
+      "squatting",
+      "lying"
+    ]
+  },
+  "included_by_action": {
+    "bending": 165,
+    "falling": 165,
+    "lying": 168,
+    "sitting": 167,
+    "squatting": 164,
+    "walking": 164
+  },
+  "included_by_binary_label": {
+    "0": 828,
+    "1": 165
+  },
+  "subjects": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ],
+  "fold_count": 5,
+  "fold_rule": "(subject_id - 1) % 5",
+  "data_shape": [
+    993,
+    3,
+    300,
+    25,
+    2
+  ],
+  "data_dtype": "float32",
+  "source_layout": "iskelet[T,60] interpreted as T x KinectV1-20 x XYZ",
+  "kinect20_to_ntu25_source_indices_zero_based": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    2,
+    7,
+    7,
+    11,
+    11
+  ],
+  "proxy_ntu25_indices_zero_based": [
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "zero_frame_policy": "trim boundary all-zero frames; linearly interpolate internal all-zero frames",
+  "normalization": "frame-wise NTU SpineMid(index 1) center; first-frame left-to-right shoulder vector aligned to +x with UmURL rotation",
+  "clip_labels_are_not_frame_labels": true,
+  "output_hashes_sha256": {
+    "action_ids.npy": "ae8b8055062dd24dbeaae95eae68d74ecb0df9fc0331a5d1f634af74987d1465",
+    "data_joint.npy": "eeb5fa318c82d318d0b9813247de73ba3a668cbd6a642e3836ff80bc410298b5",
+    "exclusions.json": "5297459561664f06fb25c4b0ac6aefc3b5cb49f6f113a5d5bd3beda42e66a978",
+    "fold_ids.npy": "84bdac29fc86aa27d8ce78014233e26357447d020755dc2395017744b2d52041",
+    "folds.json": "af7382b83929d32319c99569a0e4545302c84c0770af8b9fe794b8194c35683b",
+    "label.pkl": "19d990df8dcb2f2e2dad190965d5a6b400984afbae42f7179f11025a59e28208",
+    "labels.npy": "1a333f0f69bde3eaa1720fd49ecedf9ac96db5aa7316df6853704b7e58f9ec7e",
+    "num_frame.npy": "d474489440490d080c584cc254a3fc9a4d2beab4736810eafdbbb7aaaa11d50e",
+    "proxy_joint_mask.npy": "f089e2c4ea2e43dde94f3b73aaeec4c6b01a0f65b4ab4a193807821393f0766f",
+    "repeats.npy": "ed77cca0323f9cdbfeb1efeb1d3f60a688eb72a662e6e3889e3c5d7b5d3b89c9",
+    "samples.csv": "0ca058a08650ef3b02a2b8052c8c4d23fc7548fd6d0b7ed0cb19212c5d6e9a11",
+    "subjects.npy": "6689027c60d68737aeb5c19fdd11546c9f506a423a25a1270c64bb3c51f85a57"
+  },
+  "integrity": {
+    "passed": true,
+    "raw_count_matches": true,
+    "valid_count_matches": true,
+    "all_21_subjects_present": true,
+    "folds_subject_disjoint": true,
+    "falling_count_matches_historical_record": true,
+    "lying_count_matches_historical_record": true
+  }
+}
